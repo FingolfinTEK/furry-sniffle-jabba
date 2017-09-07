@@ -37,7 +37,6 @@ open class GuildRepository(
         .take(playerUrls.size)
         .map { it.get().get() }
         .toMap { Tuple.of(it.name, it) }
-
   }
 
 }

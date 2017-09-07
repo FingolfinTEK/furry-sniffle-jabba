@@ -13,6 +13,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cache.annotation.EnableCaching
 import org.springframework.context.annotation.Bean
+import org.springframework.data.redis.connection.RedisConnectionFactory
+import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.scheduling.annotation.EnableScheduling
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -32,6 +34,12 @@ open class Application {
 
   @Bean open fun executor(): ExecutorService =
       Executors.newFixedThreadPool(60)
+
+  @Bean open fun redisTemplate(connectionFactory: RedisConnectionFactory): RedisTemplate<*, *> {
+    val template = RedisTemplate<String, String>()
+    template.connectionFactory = connectionFactory
+    return template
+  }
 
   @Bean open fun discordBotContext(properties: BotProperties): JDA =
       JDABuilder(AccountType.BOT)
