@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 import java.util.concurrent.ConcurrentHashMap
 import javax.annotation.PostConstruct
 
-const val REFRESH_DELAY_MILLIS = 600000L
+const val REFRESH_DELAY_MILLIS = 3600000L
 
 @Component
 open class GuildChannelRepository(
