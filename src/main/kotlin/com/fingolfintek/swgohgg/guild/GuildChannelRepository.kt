@@ -47,7 +47,9 @@ open class GuildChannelRepository(
       initialDelay = REFRESH_DELAY_MILLIS,
       fixedDelay = REFRESH_DELAY_MILLIS)
   private fun refreshRosters() {
-    cacheManager.getCache("collections").clear()
+    cacheManager.cacheNames
+        .forEach { cacheManager.getCache(it).clear() }
+
     collectionsByChannel
         .mapValues { it.value.guildUrl }
         .forEach { assignGuildForChannel(it.key, it.value) }
