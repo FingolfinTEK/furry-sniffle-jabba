@@ -24,7 +24,7 @@ open class InitializationHandler(
               message.channel.id, it.groupValues[1])
 
           message.channel
-              .sendMessage("Assigned guild ${it.groupValues[0]} to this channel")
+              .sendMessage("Assigned guild ${it.groupValues[1]} to this channel")
               .queue()
         })
   }
