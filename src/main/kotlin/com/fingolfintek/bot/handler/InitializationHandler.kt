@@ -12,7 +12,7 @@ open class InitializationHandler(
     private val properties: BotProperties,
     private val guildChannelRepository: GuildChannelRepository) : MessageHandler {
 
-  private val messageRegex = Regex("!tb\\s+init\\s+(http://.*swgoh.gg.+)")
+  private val messageRegex = Regex("!tb\\s+init\\s+(http(s)?://.*swgoh.gg.+)")
 
   override fun isApplicableTo(message: Message): Boolean =
       properties.isAuthorAnOfficer(message) && message.content.matches(messageRegex)
@@ -20,11 +20,12 @@ open class InitializationHandler(
   override fun processMessage(message: Message) {
     Try.ofSupplier { messageRegex.matchEntire(message.content)!! }
         .andThen(Consumer {
+          val swgohGgUrl = it.groupValues[1]
           guildChannelRepository.assignGuildForChannel(
-              message.channel.id, it.groupValues[1])
+              message.channel.id, swgohGgUrl)
 
           message.channel
-              .sendMessage("Assigned guild ${it.groupValues[1]} to this channel")
+              .sendMessage("Assigned guild $swgohGgUrl to this channel")
               .queue()
         })
   }
