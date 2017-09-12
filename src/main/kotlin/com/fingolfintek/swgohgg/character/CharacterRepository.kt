@@ -41,7 +41,7 @@ open class CharacterRepository {
   @PostConstruct
   private fun populate() {
     characters = List.ofAll(
-        htmlOf("http://swgoh.gg/")
+        htmlOf("https://swgoh.gg/")
             .select("a.media-body.character > div.media-heading")
             .map {
               Tuple.of(
