@@ -16,11 +16,12 @@ open class GuildChannelRepository(
   private val collectionsByChannel: MutableMap<String, GuildRoster> = ConcurrentHashMap()
 
   @Async
-  open fun assignGuildForChannel(channelId: String, swgohGgUrl: String) =
-      Try.ofSupplier { rosterFor(swgohGgUrl) }
-          .onSuccess { redisTemplate.boundValueOps("guilds-$channelId").set(swgohGgUrl) }
-          .onSuccess { collectionsByChannel.put(channelId, it) }
-          .get()!!
+  open fun assignGuildForChannel(channelId: String, swgohGgUrl: String, callback: () -> Unit = {}) {
+    Try.ofSupplier { rosterFor(swgohGgUrl) }
+        .onSuccess { redisTemplate.boundValueOps("guilds-$channelId").set(swgohGgUrl) }
+        .onSuccess { collectionsByChannel.put(channelId, it) }
+        .onSuccess { callback() }
+  }
 
   private fun rosterFor(swgohGgUrl: String) =
       GuildRoster(swgohGgUrl, guildRepository.getForGuildUrl(swgohGgUrl))

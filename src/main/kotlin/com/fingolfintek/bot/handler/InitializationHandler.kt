@@ -22,12 +22,14 @@ open class InitializationHandler(
         .andThen(Consumer {
           val swgohGgUrl = it.groupValues[1]
           guildChannelRepository.assignGuildForChannel(
-              message.channel.id, swgohGgUrl)
-
-          message.channel
-              .sendMessage("Assigned guild $swgohGgUrl to this channel")
-              .queue()
+              message.channel.id, swgohGgUrl,
+              { sendSuccessMessageFor(message, swgohGgUrl) })
         })
   }
+
+  private fun sendSuccessMessageFor(message: Message, swgohGgUrl: String) =
+      message.channel
+          .sendMessage("Assigned guild $swgohGgUrl to this channel")
+          .queue()
 
 }
