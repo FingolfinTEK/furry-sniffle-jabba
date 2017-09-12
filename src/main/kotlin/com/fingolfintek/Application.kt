@@ -13,13 +13,19 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cache.annotation.EnableCaching
 import org.springframework.context.annotation.Bean
+import org.springframework.core.task.TaskExecutor
+import org.springframework.core.task.support.ExecutorServiceAdapter
 import org.springframework.data.redis.connection.RedisConnectionFactory
 import org.springframework.data.redis.core.RedisTemplate
+import org.springframework.scheduling.TaskScheduler
+import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.scheduling.annotation.EnableScheduling
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-
+@EnableAsync
 @EnableCaching
 @EnableScheduling
 @SpringBootApplication
@@ -32,8 +38,18 @@ open class Application {
           .registerModule(JavaTimeModule())
           .registerModule(VavrModule())
 
+  @Bean open fun taskScheduler(): TaskScheduler =
+      ThreadPoolTaskScheduler()
+
   @Bean open fun executor(): ExecutorService =
-      Executors.newFixedThreadPool(60)
+      ExecutorServiceAdapter(taskExecutor())
+
+  @Bean open fun taskExecutor(): TaskExecutor {
+    val executor = ThreadPoolTaskExecutor()
+    executor.corePoolSize = 45
+    executor.maxPoolSize = 90
+    return executor
+  }
 
   @Bean open fun redisTemplate(connectionFactory: RedisConnectionFactory): RedisTemplate<*, *> {
     val template = RedisTemplate<String, String>()
