@@ -1,8 +1,8 @@
-package com.fingolfintek.swgohgg.character
+package com.fingolfintek.swgohgg.unit
 
 import io.vavr.collection.Set
 
-data class Character(
+data class Unit(
     val name: String,
     val tags: Set<String>
 )

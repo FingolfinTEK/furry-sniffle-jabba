@@ -1,36 +1,35 @@
-package com.fingolfintek.swgohgg.character
+package com.fingolfintek.swgohgg.unit
 
 import com.fingolfintek.util.htmlOf
 import io.vavr.Tuple
 import io.vavr.collection.HashSet
 import io.vavr.collection.List
+import io.vavr.collection.Map
 import io.vavr.control.Option
 import io.vavr.control.Try
 import org.apache.commons.lang3.StringUtils
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Component
-import javax.annotation.PostConstruct
 
-@Component
-open class CharacterRepository {
-  private lateinit var characters: List<Character>
+abstract class UnitRepositorySupport {
+  protected lateinit var units: List<Unit>
 
-  @Cacheable(cacheNames = arrayOf("characters"), key = "#name")
-  open fun searchByName(name: String): Option<Character> {
+  @Cacheable(cacheNames = arrayOf("units"), key = "#name")
+  open fun searchByName(name: String): Option<Unit> {
     return Try.ofSupplier { findByExactName(name) }
         .orElse { Try.ofSupplier { findByAbbreviation(name) } }
         .orElse { Try.ofSupplier { findByPartialName(name) } }
         .toOption()
   }
 
-  private fun findByExactName(name: String): Character =
-      characters.first { it.name.equals(name, true) }
+  private fun findByExactName(name: String): Unit =
+      units.first { it.name.equals(name, true) }
 
-  private fun findByPartialName(name: String): Character =
-      characters.first { it.name.contains(name, true) }
+  private fun findByPartialName(name: String): Unit =
+      units.first { it.name.contains(name, true) }
 
-  private fun findByAbbreviation(name: String): Character =
-      characters.first {
+  private fun findByAbbreviation(name: String): Unit =
+      units.first {
         it.name.split(Regex("[\\s()]+"))
             .filter { StringUtils.isNotBlank(it) }
             .map { it.trim()[0] }
@@ -38,10 +37,9 @@ open class CharacterRepository {
             .equals(name, true)
       }
 
-  @PostConstruct
-  private fun populate() {
-    characters = List.ofAll(
-        htmlOf("https://swgoh.gg/")
+  protected fun extractUnitsFrom(url: String): List<Unit> {
+    return List.ofAll(
+        htmlOf(url)
             .select("a.media-body.character > div.media-heading")
             .map {
               Tuple.of(
@@ -52,7 +50,7 @@ open class CharacterRepository {
                       .map { it.trim() }
                       .toSet())
             }
-            .map { Character(it._1, HashSet.ofAll(it._2)) }
+            .map { Unit(it._1, HashSet.ofAll(it._2)) }
     )
   }
 }

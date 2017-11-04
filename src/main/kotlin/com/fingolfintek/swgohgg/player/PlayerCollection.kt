@@ -4,5 +4,6 @@ import io.vavr.collection.List
 
 data class PlayerCollection(
     val name: String,
-    val collection: List<CollectedCharacter>
+    val characters: List<CollectedCharacter>,
+    val ships: List<CollectedShip>
 )

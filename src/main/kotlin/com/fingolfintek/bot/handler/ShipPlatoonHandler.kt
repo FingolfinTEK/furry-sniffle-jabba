@@ -1,8 +1,8 @@
 package com.fingolfintek.bot.handler
 
-import com.fingolfintek.swgohgg.unit.Unit
-import com.fingolfintek.swgohgg.unit.CharacterRepository
 import com.fingolfintek.swgohgg.guild.GuildChannelRepository
+import com.fingolfintek.swgohgg.unit.ShipRepository
+import com.fingolfintek.swgohgg.unit.Unit
 import io.vavr.Tuple
 import io.vavr.control.Try
 import net.dv8tion.jda.core.entities.Message
@@ -10,11 +10,11 @@ import org.springframework.stereotype.Component
 import java.util.function.Consumer
 
 @Component
-open class PlatoonHandler(
-    private val characterRepository: CharacterRepository,
+open class ShipPlatoonHandler(
+    private val shipRepository: ShipRepository,
     private val guildChannelRepository: GuildChannelRepository) : MessageHandler {
 
-  private val messageRegex = Regex("!tb\\s+platoon\\s+p([1-6])\\s+([\\w ]+)\\s+(\\d+)")
+  private val messageRegex = Regex("!tb\\s+ship-platoon\\s+p([1-6])\\s+([\\w ]+)\\s+(\\d+)")
 
   override fun isApplicableTo(message: Message): Boolean =
       message.content.matches(messageRegex)
@@ -25,12 +25,12 @@ open class PlatoonHandler(
           val rarity = 1 + it.groupValues[1].toInt()
           val limit = it.groupValues[3].toInt()
 
-          characterRepository.searchByName(it.groupValues[2])
+          shipRepository.searchByName(it.groupValues[2])
               .map { toPriorityListOfMembersHavingToonAt(message.channel.id, it, rarity, limit) }
               .peek { message.channel.sendMessage(it).queue() }
               .onEmpty {
                 message.channel
-                    .sendMessage("No members found that have ${characterRepository.searchByName(it.groupValues[2]).get()} at $rarity*")
+                    .sendMessage("No members found that have ${shipRepository.searchByName(it.groupValues[2]).get()} at $rarity*")
                     .queue()
               }
         })
@@ -42,8 +42,8 @@ open class PlatoonHandler(
 
     return guildChannelRepository.getRosterForChannel(channelId)
         .flatMap { entry ->
-          entry.value.characters
-              .filter { it.character == toon }
+          entry.value.ships
+              .filter { it.ship == toon }
               .map { Tuple.of(entry.key, it) }
         }
         .filter { it._2.rarity >= rarity }

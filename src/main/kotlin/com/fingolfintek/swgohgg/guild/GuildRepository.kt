@@ -27,10 +27,10 @@ open class GuildRepository(
 
     val playerUrls = htmlOf(swgohGgUrl)
         .select(".character-list table > tbody > tr > td:nth-child(1) > a")
-        .map { "https://swgoh.gg${it.attr("href")}collection" }
+        .map { "https://swgoh.gg${it.attr("href")}" }
 
     val threadPool = ExecutorCompletionService<PlayerCollection>(executorService)
-    playerUrls.forEach { threadPool.submit { playerCollectionRepository.getForPlayerCollectionUrl(it) } }
+    playerUrls.forEach { threadPool.submit { playerCollectionRepository.getForPlayerBaseUrl(it) } }
 
     return Stream
         .continually { Try.ofSupplier { threadPool.poll(1, TimeUnit.MINUTES) } }
