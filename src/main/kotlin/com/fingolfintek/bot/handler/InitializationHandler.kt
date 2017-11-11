@@ -28,8 +28,6 @@ open class InitializationHandler(
   }
 
   private fun sendSuccessMessageFor(message: Message, swgohGgUrl: String) =
-      message.channel
-          .sendMessage("Assigned guild $swgohGgUrl to this channel")
-          .queue()
+      message.respondWith("Assigned guild $swgohGgUrl to this channel")
 
 }

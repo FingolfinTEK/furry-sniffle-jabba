@@ -1,8 +1,8 @@
 package com.fingolfintek.bot.handler
 
-import com.fingolfintek.swgohgg.unit.Unit
-import com.fingolfintek.swgohgg.unit.CharacterRepository
 import com.fingolfintek.swgohgg.guild.GuildChannelRepository
+import com.fingolfintek.swgohgg.unit.CharacterRepository
+import com.fingolfintek.swgohgg.unit.Unit
 import io.vavr.Tuple
 import io.vavr.control.Try
 import net.dv8tion.jda.core.entities.Message
@@ -27,17 +27,16 @@ open class PlatoonHandler(
         .andThen(Consumer {
           val rarity = 1 + it.groupValues[1].toInt()
           val limit = it.groupValues[3].toInt()
+          val name = it.groupValues[2]
 
-          characterRepository.searchByName(it.groupValues[2])
+          characterRepository.searchByName(name)
               .map { toPriorityListOfMembersHavingToonAt(message.channel.id, it, rarity, limit) }
-              .peek { message.channel.sendMessage(it).queue() }
+              .peek { message.respondWith(it) }
               .onEmpty {
-                message.channel
-                    .sendMessage("No members found that have ${characterRepository.searchByName(it.groupValues[2]).get()} at $rarity*")
-                    .queue()
+                message.respondWith("No members found that have $name at $rarity*")
               }
         })
-
+        .onFailure { message.respondWith("Error processing message: ${it.message}") }
   }
 
   private fun toPriorityListOfMembersHavingToonAt(
@@ -51,11 +50,15 @@ open class PlatoonHandler(
         }
         .filter { it._2.rarity >= rarity }
         .sortedBy { it._2.power }
-        .map { "${it._1} (${it._2})" }
+        .map { "${it._1} (${it._2.toPowerString()})" }
         .distinct()
         .take(limit)
         .withIndex()
-        .joinToString(separator = "\n", transform = { "${it.index + 1}. ${it.value}" })
+        .joinToString(
+            prefix = "__**${toon.name}**__\n\n",
+            separator = "\n",
+            transform = { "${it.index + 1}. ${it.value}" }
+        )
   }
 
 }

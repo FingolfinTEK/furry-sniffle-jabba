@@ -8,7 +8,7 @@ data class CollectedShip(
     val power: Int,
     val rarity: Int) {
 
-  override fun toString(): String {
-    return "${ship.name} $rarity\u2606, L$level"
-  }
+  override fun toString(): String = "${ship.name} ${toPowerString()}"
+
+  fun toPowerString(): String = "$rarity☆, L$level"
 }

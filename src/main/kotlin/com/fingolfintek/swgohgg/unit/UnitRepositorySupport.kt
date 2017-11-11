@@ -4,15 +4,13 @@ import com.fingolfintek.util.htmlOf
 import io.vavr.Tuple
 import io.vavr.collection.HashSet
 import io.vavr.collection.List
-import io.vavr.collection.Map
 import io.vavr.control.Option
 import io.vavr.control.Try
 import org.apache.commons.lang3.StringUtils
 import org.springframework.cache.annotation.Cacheable
-import org.springframework.stereotype.Component
 
 abstract class UnitRepositorySupport {
-  protected lateinit var units: List<Unit>
+  protected var units: List<Unit> = List.empty()
 
   @Cacheable(cacheNames = arrayOf("units"), key = "#name")
   open fun searchByName(name: String): Option<Unit> {
@@ -53,4 +51,5 @@ abstract class UnitRepositorySupport {
             .map { Unit(it._1, HashSet.ofAll(it._2)) }
     )
   }
+
 }

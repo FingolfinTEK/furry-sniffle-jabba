@@ -27,35 +27,37 @@ open class ShipPlatoonHandler(
         .andThen(Consumer {
           val rarity = 1 + it.groupValues[1].toInt()
           val limit = it.groupValues[3].toInt()
+          val name = it.groupValues[2]
 
-          shipRepository.searchByName(it.groupValues[2])
+          shipRepository.searchByName(name)
               .map { toPriorityListOfMembersHavingToonAt(message.channel.id, it, rarity, limit) }
-              .peek { message.channel.sendMessage(it).queue() }
+              .peek { message.respondWith(it) }
               .onEmpty {
-                message.channel
-                    .sendMessage("No members found that have ${shipRepository.searchByName(it.groupValues[2]).get()} at $rarity*")
-                    .queue()
+                message.respondWith("No members found that have $name at $rarity*")
               }
         })
 
   }
 
   private fun toPriorityListOfMembersHavingToonAt(
-      channelId: String, toon: Unit, rarity: Int, limit: Int): String {
+      channelId: String, ship: Unit, rarity: Int, limit: Int): String {
 
     return guildChannelRepository.getRosterForChannel(channelId)
         .flatMap { entry ->
           entry.value.ships
-              .filter { it.ship == toon }
+              .filter { it.ship == ship }
               .map { Tuple.of(entry.key, it) }
         }
         .filter { it._2.rarity >= rarity }
         .sortedBy { it._2.power }
-        .map { "${it._1} (${it._2})" }
+        .map { "${it._1} (${it._2.toPowerString()})" }
         .distinct()
         .take(limit)
         .withIndex()
-        .joinToString(separator = "\n", transform = { "${it.index + 1}. ${it.value}" })
+        .joinToString(
+            prefix = "__**${ship.name}**__\n\n",
+            separator = "\n",
+            transform = { "${it.index + 1}. ${it.value}" })
   }
 
 }

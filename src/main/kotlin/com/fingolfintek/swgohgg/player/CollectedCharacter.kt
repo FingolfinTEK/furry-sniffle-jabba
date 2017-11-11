@@ -9,7 +9,7 @@ data class CollectedCharacter(
     val gearLevel: Int,
     val rarity: Int) {
   
-  override fun toString(): String {
-    return "${character.name} $rarity\u2606, L$level, G$gearLevel"
-  }
+  override fun toString(): String = "${character.name} ${toPowerString()}"
+
+  fun toPowerString(): String = "$rarity☆, L$level, G$gearLevel"
 }
