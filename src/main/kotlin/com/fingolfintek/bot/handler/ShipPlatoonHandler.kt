@@ -14,7 +14,10 @@ open class ShipPlatoonHandler(
     private val shipRepository: ShipRepository,
     private val guildChannelRepository: GuildChannelRepository) : MessageHandler {
 
-  private val messageRegex = Regex("!tb\\s+ship-platoon\\s+p([1-6])\\s+([\\w ]+)\\s+(\\d+)")
+  private val messageRegex = Regex(
+      "!tb\\s+ship-platoon\\s+p([1-6])\\s+(.+)\\s+(\\d+)",
+      RegexOption.IGNORE_CASE
+  )
 
   override fun isApplicableTo(message: Message): Boolean =
       message.content.matches(messageRegex)
