@@ -15,7 +15,6 @@ open class GuildChannelRepository(
 
   private val collectionsByChannel: MutableMap<String, GuildRoster> = ConcurrentHashMap()
 
-  @Async
   open fun assignGuildForChannel(channelId: String, swgohGgUrl: String, callback: () -> Unit = {}) {
     Try.ofSupplier { rosterFor(swgohGgUrl) }
         .onSuccess { redisTemplate.boundValueOps("guilds-$channelId").set(swgohGgUrl) }
@@ -26,11 +25,9 @@ open class GuildChannelRepository(
   private fun rosterFor(swgohGgUrl: String) =
       GuildRoster(swgohGgUrl, guildRepository.getForGuildUrl(swgohGgUrl))
 
-  open fun getRosterForChannel(channelId: String): Map<String, PlayerCollection> {
-    return collectionsByChannel[channelId]?.roster?.toJavaMap() ?: emptyMap()
-  }
+  open fun getRosterForChannel(channelId: String): Map<String, PlayerCollection> =
+      collectionsByChannel[channelId]?.roster?.toJavaMap() ?: emptyMap()
 
-  open fun collectionsByChannel(): Map<String, GuildRoster> {
-    return Collections.unmodifiableMap(collectionsByChannel)
-  }
+  open fun collectionsByChannel(): Map<String, GuildRoster> =
+      Collections.unmodifiableMap(collectionsByChannel)
 }
