@@ -1,6 +1,8 @@
 package com.fingolfintek
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping.NON_CONCRETE_AND_ARRAYS
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fingolfintek.bot.BotProperties
@@ -17,13 +19,15 @@ import org.springframework.core.task.TaskExecutor
 import org.springframework.core.task.support.ExecutorServiceAdapter
 import org.springframework.data.redis.connection.RedisConnectionFactory
 import org.springframework.data.redis.core.RedisTemplate
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer
+import org.springframework.data.redis.serializer.RedisSerializer
+import org.springframework.data.redis.serializer.StringRedisSerializer
 import org.springframework.scheduling.TaskScheduler
 import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler
 import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
 @EnableAsync
 @EnableCaching
@@ -46,14 +50,15 @@ open class Application {
 
   @Bean open fun taskExecutor(): TaskExecutor {
     val executor = ThreadPoolTaskExecutor()
-    executor.corePoolSize = 45
-    executor.maxPoolSize = 90
+    executor.corePoolSize = 25
+    executor.maxPoolSize = 50
     return executor
   }
 
   @Bean open fun redisTemplate(connectionFactory: RedisConnectionFactory): RedisTemplate<*, *> {
-    val template = RedisTemplate<String, String>()
+    val template = RedisTemplate<String, Any>()
     template.connectionFactory = connectionFactory
+    template.keySerializer = StringRedisSerializer()
     return template
   }
 

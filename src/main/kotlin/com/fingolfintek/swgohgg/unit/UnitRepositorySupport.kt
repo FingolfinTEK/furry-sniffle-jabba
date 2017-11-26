@@ -12,7 +12,6 @@ import org.springframework.cache.annotation.Cacheable
 abstract class UnitRepositorySupport {
   protected var units: List<Unit> = List.empty()
 
-  @Cacheable(cacheNames = arrayOf("units"), key = "#name")
   open fun searchByName(name: String): Option<Unit> {
     return Try.ofSupplier { findByExactName(name) }
         .orElse { Try.ofSupplier { findByAbbreviation(name) } }

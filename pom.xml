@@ -56,17 +56,16 @@
             <version>3.3.1_305</version>
         </dependency>
 
-        <!--Caching-->
-        <dependency>
-            <groupId>com.github.ben-manes.caffeine</groupId>
-            <artifactId>caffeine</artifactId>
-        </dependency>
-
         <!--Utils-->
         <dependency>
             <groupId>io.vavr</groupId>
             <artifactId>vavr</artifactId>
             <version>0.9.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.jodah</groupId>
+            <artifactId>failsafe</artifactId>
+            <version>1.0.4</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -97,6 +96,11 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>18.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.esotericsoftware</groupId>
+            <artifactId>kryo</artifactId>
+            <version>4.0.1</version>
         </dependency>
 
         <!--Spring-->
