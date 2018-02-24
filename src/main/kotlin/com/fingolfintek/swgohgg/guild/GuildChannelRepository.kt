@@ -3,7 +3,6 @@ package com.fingolfintek.swgohgg.guild
 import com.fingolfintek.swgohgg.player.PlayerCollection
 import io.vavr.control.Try
 import org.springframework.data.redis.core.RedisTemplate
-import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap

@@ -1,23 +1,21 @@
 package com.fingolfintek.swgohgg.guild
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
+import com.fingolfintek.swgohgg.player.CollectedUnit
 import com.fingolfintek.swgohgg.player.PlayerCollection
-import com.fingolfintek.swgohgg.player.PlayerCollectionRepository
-import com.fingolfintek.util.htmlOf
+import com.fingolfintek.swgohgg.unit.UnitRepository
 import io.vavr.Tuple
 import io.vavr.collection.Map
-import io.vavr.collection.Stream
-import io.vavr.control.Try
+import org.jsoup.Jsoup
 import org.slf4j.LoggerFactory
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Component
-import java.util.concurrent.ExecutorCompletionService
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.TimeUnit
 
 @Component
 open class GuildRepository(
-    private val executorService: ExecutorService,
-    private val playerCollectionRepository: PlayerCollectionRepository) {
+    private val mapper: ObjectMapper,
+    private val unitRepository: UnitRepository) {
 
   private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -25,18 +23,27 @@ open class GuildRepository(
   open fun getForGuildUrl(swgohGgUrl: String): Map<String, PlayerCollection> {
     logger.info("Fetching rosters for $swgohGgUrl")
 
-    val playerUrls = htmlOf(swgohGgUrl)
-        .select(".character-list table > tbody > tr > td:nth-child(1) > a")
-        .map { "https://swgoh.gg${it.attr("href")}" }
+    val guildId = swgohGgUrl
+        .replace("https://swgoh.gg/g/(\\d+)/.+".toRegex(), "$1")
+        .toInt()
 
-    val threadPool = ExecutorCompletionService<PlayerCollection>(executorService)
-    playerUrls.forEach { threadPool.submit { playerCollectionRepository.getForPlayerBaseUrl(it) } }
+    val jsonBody = Jsoup
+        .connect("https://swgoh.gg/api/guilds/$guildId/units/")
+        .ignoreContentType(true)
+        .execute().body()
 
-    return Stream
-        .continually { Try.ofSupplier { threadPool.poll(1, TimeUnit.MINUTES) } }
-        .take(playerUrls.size)
-        .map { it.get().get() }
-        .toMap { Tuple.of(it.name, it) }
+    val units: Map<String, List<CollectedUnit>> = mapper.readValue(jsonBody)
+
+    return units.mapKeys { unitRepository.searchById(it) }
+        .map { unit, collection ->
+          Tuple.of(unit, collection.map { c -> c.copy(unit = unit) })
+        }
+        .values()
+        .flatMap { it }
+        .groupBy { it.player }
+        .map { player, collection ->
+          Tuple.of(player, PlayerCollection(player, collection.toList()))
+        }
   }
 
 }

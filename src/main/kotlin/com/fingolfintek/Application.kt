@@ -1,10 +1,9 @@
 package com.fingolfintek
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping.NON_CONCRETE_AND_ARRAYS
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.KotlinModule
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fingolfintek.bot.BotProperties
 import io.vavr.jackson.datatype.VavrModule
 import net.dv8tion.jda.core.AccountType
@@ -15,12 +14,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cache.annotation.EnableCaching
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Primary
 import org.springframework.core.task.TaskExecutor
 import org.springframework.core.task.support.ExecutorServiceAdapter
 import org.springframework.data.redis.connection.RedisConnectionFactory
 import org.springframework.data.redis.core.RedisTemplate
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer
-import org.springframework.data.redis.serializer.RedisSerializer
 import org.springframework.data.redis.serializer.StringRedisSerializer
 import org.springframework.scheduling.TaskScheduler
 import org.springframework.scheduling.annotation.EnableAsync
@@ -36,11 +34,11 @@ import java.util.concurrent.ExecutorService
 @EnableConfigurationProperties(BotProperties::class)
 open class Application {
 
-  @Bean open fun objectMapper(): ObjectMapper =
-      ObjectMapper()
-          .registerModule(KotlinModule())
+  @Bean @Primary open fun objectMapper(): ObjectMapper =
+      jacksonObjectMapper()
           .registerModule(JavaTimeModule())
           .registerModule(VavrModule())
+          .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
   @Bean open fun taskScheduler(): TaskScheduler =
       ThreadPoolTaskScheduler()
