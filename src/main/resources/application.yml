@@ -1,0 +1,214 @@
+discord:
+  bot:
+    token: your-token-here
+
+guild:
+  refresh:
+    delay: 3600000
+
+spring:
+  cache:
+    type: redis
+
+teams:
+  tw:
+    defense:
+      defaultRequirements:
+        minLevel: 80
+        minCharPower: 13000
+        minRarity: 7
+        minGearLevel: 11
+        minTotalPower: 75000
+
+      characterRequirements:
+        RJT:
+          minCharPower: 20000
+          minGearLevel: 10
+
+        CLS:
+          minCharPower: 17500
+          minGearLevel: 10
+
+        Han Solo:
+          minCharPower: 17500
+
+        BB8:
+          minCharPower: 17500
+
+        R2-D2:
+          minCharPower: 17500
+
+        Barris:
+          minCharPower: 17500
+
+        Rey (Scavenger):
+          minCharPower: 15000
+
+        GAT:
+          minCharPower: 15000
+
+        Baze:
+          minRarity: 5
+
+        Sith Trooper:
+          minRarity: 5
+
+        Shore:
+          minRarity: 5
+
+        Holdo:
+          minRarity: 3
+
+        Sion:
+          minRarity: 3
+
+        Nihilus:
+          minRarity: 3
+
+        Hermit Yoda:
+          minRarity: 5
+
+        Fives:
+          minGearLevel: 9
+
+      templates:
+        RJT + Kenobis:
+          - name: RJT
+          - name: GK
+          - name: Old Ben
+          - name: BB8
+          - name: R2-D2
+
+        RJT Foresights:
+          - name: RJT
+          - name: GK
+          - name: Holdo
+          - name: BB8
+          - name: R2-D2
+
+        RJT Titans:
+          - name: RJT
+          - name: GK
+          - name: GAT
+          - name: BB8
+          - name: R2-D2
+
+        zEP mainstream:
+          - name: EP
+          - name: Vader
+          - name: GAT
+          - name: Nihilus
+          - name: Shore
+
+        zEP GK Sion:
+          - name: EP
+          - name: Vader
+          - name: Sion
+          - name: Nihilus
+          - name: GK
+
+        zEP Nightmare:
+          - name: EP
+          - name: Vader
+          - name: Sion
+          - name: Nihilus
+          - name: Sith Trooper
+
+        CLS Fulcrums:
+          - name: CLS
+          - name: Han Solo
+          - name: Baze
+          - name: Chirrut
+          - name: Fulcrum
+
+        CLS Titans:
+          - name: CLS
+          - name: Han Solo
+          - name: GAT
+          - name: GK
+          - name: R2-D2
+
+        CLS Kenobis:
+          - name: CLS
+          - name: Han Solo
+          - name: Old Ben
+          - name: GK
+          - name: R2-D2
+
+        CLS Hans:
+          - name: CLS
+          - name: Han Solo
+          - name: CHS
+          - name: STH
+          - name: Old Ben
+
+        CLS Hope:
+          - name: CLS
+          - name: Han Solo
+          - name: Princess Leia
+          - name: STH
+          - name: Old Ben
+
+        CLS R1:
+          - name: CLS
+          - name: Han Solo
+          - name: Baze
+          - name: Chirrut
+          - name: SRP
+
+        CLS R1 Revival:
+          - name: CLS
+          - name: Baze
+          - name: Erso
+          - name: Chirrut
+          - name: SRP
+
+        R1 w/ CLS:
+          - name: Erso
+          - name: CLS
+          - name: Chirrut
+          - name: SRP
+          - name: Baze
+
+        GK-Zarriss countering taunts:
+          - name: GK
+          - name: Barris
+          - name: Sun Fac
+          - name: Fives
+          - name: STH
+
+        GK-Zarriss countering tanks:
+          - name: GK
+          - name: Barris
+          - name: Sun Fac
+          - name: Fives
+          - name: Nihilus
+
+        GK-Zarriss Dagobah counters:
+          - name: GK
+          - name: Barris
+          - name: Sun Fac
+          - name: Fives
+          - name: Hermit Yoda
+
+        GK-Zarriss Tenacious counters:
+          - name: GK
+          - name: Barris
+          - name: GMY
+          - name: Fives
+          - name: JKA
+
+        GK-Zarriss Jedi Counters:
+          - name: GK
+          - name: Barris
+          - name: JKA
+          - name: GMY
+          - name: Aayla
+
+        GK-Zarriss Jedi All Stars:
+          - name: GK
+          - name: Barris
+          - name: JKA
+          - name: GMY
+          - name: Windu
+
