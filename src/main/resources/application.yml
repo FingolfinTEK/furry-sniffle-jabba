@@ -95,6 +95,27 @@ teams:
           - name: BB-8
           - name: R2-D2
 
+        RJT Visas:
+          - name: RJT
+          - name: GK
+          - name: Visas
+          - name: BB-8
+          - name: R2-D2
+
+        RJT Tanking Droids:
+          - name: RJT
+          - name: GK
+          - name: Chopper
+          - name: BB-8
+          - name: R2-D2
+
+        RJT ft Sand Crawlers:
+          - name: RJT
+          - name: Nebit
+          - name: Chopper
+          - name: BB-8
+          - name: R2-D2
+
         zEP mainstream:
           - name: EP
           - name: Vader

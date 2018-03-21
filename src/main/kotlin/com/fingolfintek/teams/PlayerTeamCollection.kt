@@ -12,7 +12,11 @@ data class Team(
     val name: String,
     val units: List<CollectedUnit>) {
 
+  fun power(): Int {
+    return units.map { it.power }.sum()
+  }
+
   override fun toString(): String {
-    return "$name\n${units.joinToString("\n\t", "\t") { it.unit.name }}"
+    return "$name (${power()} GP)\n${units.joinToString("\n\t", "\t") { it.unit.name }}"
   }
 }

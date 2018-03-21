@@ -2,6 +2,7 @@ package com.fingolfintek.bot.handler
 
 import com.fingolfintek.swgohgg.guild.GuildChannelRepository
 import com.fingolfintek.swgohgg.player.PlayerCollection
+import com.fingolfintek.teams.PlayerTeamCollection
 import com.fingolfintek.teams.Team
 import com.fingolfintek.teams.Teams
 import com.google.common.collect.Collections2
@@ -31,41 +32,42 @@ open class PlayerTwDefenseHandler(
         .andThen(Consumer {
           val playerName = it.groupValues[1]
 
-          if (playerName.isEmpty())
-            guildChannelRepository
-                .getRosterForChannel(message.channel.id)
-                .map {  }
-          else
-            processTeamsFor(playerName, message)
+          val guildRoster = guildChannelRepository
+              .getRosterForChannel(message.channel.id)
+
+          if (playerName.isEmpty()) {
+            guildRoster
+                .map { }
+          } else
+            processTeamsFor(guildRoster[playerName]!!, message)
         })
         .onFailure { message.respondWith("Error processing message: ${it.message}") }
   }
 
-  private fun processTeamsFor(playerName: String, message: Message) {
-    val teams = resolveOptimalTeamsFor(playerName, guildChannelRepository
-        .getRosterForChannel(message.channel.id))
+  private fun processTeamsFor(roster: PlayerCollection, message: Message) {
+    val compatibleTeams = compatibleTeamsFor(roster)
+    val compatibleTeamsMessage = compatibleTeams.teams.joinToString("\n\n") { "$it" }
+    message.respondWith("${roster.name}'s compatible teams\n\n$compatibleTeamsMessage")
 
-
-    val teamsMessage = teams.joinToString("\n\n") { "$it" }
-    message.respondWith("$playerName's teams\n\n$teamsMessage")
+    val optimalTeams = resolveOptimalTeamsFor(compatibleTeams)
+    val teamsMessage = optimalTeams.joinToString("\n\n") { "$it" }
+    message.respondWith("${roster.name}'s optimal teams\n\n$teamsMessage")
   }
 
-  private fun resolveOptimalTeamsFor(
-      playerName: String, map: Map<String, PlayerCollection>): List<Team> {
+  private fun compatibleTeamsFor(roster: PlayerCollection) =
+      teamDefinitions.tw.defense.compatibleTeamsFor(roster)
 
-    val roster = map[playerName]!!
-
-    val rosterUnitsByName = roster.units
+  private fun resolveOptimalTeamsFor(compatibleTeams: PlayerTeamCollection): List<Team> {
+    val compatibleUnitsByName = Stream
+        .ofAll(compatibleTeams.teams)
+        .flatMap { it.units }
         .toMap { Tuple.of(it.unit.name, it) }
         .toJavaMap()
-
-    val compatibleTeams = teamDefinitions.tw.defense
-        .compatibleTeamsFor(roster)
 
     return Stream
         .ofAll(Collections2.permutations(compatibleTeams.teams))
         .map { teams ->
-          val tmpRoster = HashMap(rosterUnitsByName)
+          val tmpRoster = HashMap(compatibleUnitsByName)
 
           teams.filter {
             val teamSupported = it.units
@@ -79,9 +81,13 @@ open class PlayerTwDefenseHandler(
             teamSupported
           }
         }
-        .sortBy { it.size }
-        .reverse()
+        .sorted(Comparator
+            .comparing<List<Team>, Int> { it.size }
+            .reversed()
+            .thenByDescending { it.map { it.power() }.sum() }
+        )
         .head()
+
   }
 
 }
