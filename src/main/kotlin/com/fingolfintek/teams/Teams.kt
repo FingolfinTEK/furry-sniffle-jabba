@@ -1,7 +1,10 @@
 package com.fingolfintek.teams
 
 import com.fingolfintek.swgohgg.player.CollectedUnit
+import com.fingolfintek.swgohgg.player.PlayerCollection
 import com.fingolfintek.swgohgg.unit.UnitRepository
+import io.vavr.Tuple
+import io.vavr.control.Option
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
@@ -21,16 +24,13 @@ open class Teams(
 }
 
 open class TerritoryWar {
-  var offense = SquadTemplateRequirements()
   var defense = SquadTemplateRequirements()
 
   fun replaceUnitNames(unitRepository: UnitRepository) {
-    offense.replaceUnitNames(unitRepository)
     defense.replaceUnitNames(unitRepository)
   }
 
   fun populateDefaults() {
-    offense.populateDefaults()
     defense.populateDefaults()
   }
 }
@@ -43,22 +43,50 @@ open class SquadTemplateRequirements {
   fun replaceUnitNames(unitRepository: UnitRepository) {
     templates.values.forEach { it.replaceUnitNames(unitRepository) }
 
-    characterRequirements.mapKeys {
-      unitRepository.searchByName(it.key)
-          .map { it.name }
-          .getOrElse(it.key)
-    }
+    characterRequirements = characterRequirements
+        .mapKeys {
+          unitRepository.searchByName(it.key)
+              .map { it.name }
+              .getOrElse(it.key)
+        }
   }
 
   fun populateDefaults() {
     characterRequirements.values.forEach { it.populateFrom(defaultRequirements) }
-    templates.mapValues {
+
+    templates = templates.mapValues {
       it.value.forEach {
-        val requirements = characterRequirements[it.name]
+        val requirements = Option
+            .of(characterRequirements[it.name])
+            .getOrElse(defaultRequirements)
+
         it.requirements.populateFrom(requirements!!)
       }
       it.value
     }
+  }
+
+  fun compatibleTeamsFor(collection: PlayerCollection): PlayerTeamCollection {
+    val unitsByName = collection.units
+        .toMap { it -> Tuple.of(it.unit.name, it) }
+
+    val teams = templates
+        .filter {
+          it.value.isFulfilledBy(unitsByName) && hasMinTotalPower(it.value, unitsByName)
+        }
+        .map {
+          val units = it.value.map { unitsByName[it.name].get() }
+          return@map Team(it.key, units)
+        }
+
+    return PlayerTeamCollection(collection.name, teams)
+  }
+
+  private fun hasMinTotalPower(
+      squad: SquadTemplate,
+      units: io.vavr.collection.Map<String, CollectedUnit>): Boolean {
+    val teamPower = squad.map { units[it.name].map { it.power }.get() }.sum()
+    return teamPower >= defaultRequirements.minTotalPower
   }
 }
 
@@ -67,17 +95,31 @@ open class TeamRequirements : CharacterRequirements() {
 }
 
 open class SquadTemplate : ArrayList<SquadTemplateEntry>() {
+
   fun replaceUnitNames(unitRepository: UnitRepository) {
     forEach {
       unitRepository.searchByName(it.name)
           .peek { unit -> it.name = unit.name }
     }
   }
+
+  fun isFulfilledBy(units: io.vavr.collection.Map<String, CollectedUnit>): Boolean {
+    val fulfillments = map { unitReq ->
+      units[unitReq.name]
+          .map { unitReq.isFulfilledBy(it) }
+          .getOrElse(false)
+    }
+    return fulfillments.reduce({ b1, b2 -> b1 && b2 })
+  }
 }
 
 open class SquadTemplateEntry {
   var name = ""
   var requirements = CharacterRequirements()
+
+  fun isFulfilledBy(unit: CollectedUnit): Boolean {
+    return requirements.isFulfilledBy(unit)
+  }
 }
 
 open class CharacterRequirements {
@@ -94,10 +136,15 @@ open class CharacterRequirements {
     minGearLevel = if (minGearLevel == 0) defaults.minGearLevel else minGearLevel
   }
 
-  fun fulfills(unit: CollectedUnit): Boolean {
+  fun isFulfilledBy(unit: CollectedUnit): Boolean {
     return unit.level >= minLevel
         && unit.power >= minCharPower
         && unit.rarity >= minRarity
         && unit.gear_level >= minGearLevel
   }
+
+  override fun toString(): String =
+      "CharacterRequirements(" +
+          "minLevel=$minLevel, minCharPower=$minCharPower, " +
+          "minRarity=$minRarity, minGearLevel=$minGearLevel, zetas=$zetas)"
 }

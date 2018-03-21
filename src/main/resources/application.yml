@@ -32,7 +32,7 @@ teams:
         Han Solo:
           minCharPower: 17500
 
-        BB8:
+        BB-8:
           minCharPower: 17500
 
         R2-D2:
@@ -52,6 +52,8 @@ teams:
 
         Sith Trooper:
           minRarity: 5
+          minGearLevel: 10
+          minCharPower: 12000
 
         Shore:
           minRarity: 5
@@ -72,25 +74,25 @@ teams:
           minGearLevel: 9
 
       templates:
-        RJT + Kenobis:
+        RJT Kenobis:
           - name: RJT
           - name: GK
           - name: Old Ben
-          - name: BB8
+          - name: BB-8
           - name: R2-D2
 
         RJT Foresights:
           - name: RJT
           - name: GK
           - name: Holdo
-          - name: BB8
+          - name: BB-8
           - name: R2-D2
 
         RJT Titans:
           - name: RJT
           - name: GK
           - name: GAT
-          - name: BB8
+          - name: BB-8
           - name: R2-D2
 
         zEP mainstream:
@@ -135,10 +137,19 @@ teams:
           - name: GK
           - name: R2-D2
 
+        CLS Chaze GAT:
+          - name: CLS
+          - name: Han Solo
+          - name: Baze
+          - name: Chirrut
+          - name: GAT
+
         CLS Hans:
           - name: CLS
           - name: Han Solo
           - name: CHS
+            requirements:
+              minGearLevel: 10
           - name: STH
           - name: Old Ben
 
@@ -163,14 +174,14 @@ teams:
           - name: Chirrut
           - name: SRP
 
-        R1 w/ CLS:
+        R1 with CLS:
           - name: Erso
           - name: CLS
           - name: Chirrut
           - name: SRP
           - name: Baze
 
-        GK-Zarriss countering taunts:
+        GK Zarriss countering taunts:
           - name: GK
           - name: Barris
           - name: Sun Fac
