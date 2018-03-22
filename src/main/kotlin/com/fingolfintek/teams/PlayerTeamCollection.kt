@@ -9,6 +9,7 @@ data class PlayerTeamCollection(
     val name: String,
     val teams: List<Team>
 ) : Serializable {
+
   fun sha1(): String {
     return Hashing.sha1()
         .hashString(
@@ -30,6 +31,6 @@ data class Team(
   }
 
   override fun toString(): String {
-    return "__$name (${power() / 1000}k GP)__\n${units.joinToString("\n\t", "\t") { it.unit.name }}"
+    return "$name (${power() / 1000}k GP)\n${units.joinToString("\n\t", "\t") { it.unit.name }}"
   }
 }

@@ -21,19 +21,12 @@ open class OptimalTeamsResolver {
         .toMap { Tuple.of(it.unit.name, it) }
         .toJavaMap()
 
-    val sortedOptimalTeams = teams
+    return teams
         .flatMap { generateRecursive(it, teams, roster) }
-        .sorted(comparing<Stream<Team>, Int> { it.size() }.reversed())
-
-    val first = sortedOptimalTeams.head()
-
-    return sortedOptimalTeams
-        .filter { it.size() == first.size() }
-        .sorted(comparing<Stream<Team>, Int> {
-          it.map { it.power() }.sum().toInt()
-        }.reversed())
-        .head()
-        .toJavaList()
+        .sorted(byTeamCountThenTotalPower())
+        .headOption()
+        .map { it.toJavaList() }
+        .getOrElse { emptyList() }
   }
 
   private fun generateRecursive(
@@ -62,5 +55,9 @@ open class OptimalTeamsResolver {
 
   private fun Team.supportedIn(inventory: Map<String, CollectedUnit>): Boolean =
       CollectionUtils.containsAll(inventory.keys, unitNames)
+
+  private fun byTeamCountThenTotalPower() =
+      comparing<Stream<Team>, Int> { it.size() }.reversed()
+          .thenByDescending { it.map { it.power() }.sum().toInt() }
 
 }

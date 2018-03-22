@@ -3,9 +3,9 @@ package com.fingolfintek.bot.handler
 import com.google.common.base.Splitter
 import io.vavr.control.Option
 import io.vavr.control.Try
+import net.dv8tion.jda.core.EmbedBuilder
 import net.dv8tion.jda.core.entities.Message
 import net.dv8tion.jda.core.entities.MessageEmbed
-import net.dv8tion.jda.core.entities.impl.MessageEmbedImpl
 import org.slf4j.LoggerFactory
 import java.awt.Color
 
@@ -42,13 +42,11 @@ interface MessageHandler {
           .omitEmptyStrings()
           .splitToList(response)
           .forEach { messagePart ->
-            val embed = MessageEmbedImpl()
-            embed.color = Color.decode("0x2a9690")
-            embed.fields = emptyList()
-            embed.title = title
-            embed.description = messagePart
-
-            respondWith(embed)
+            respondWith(EmbedBuilder()
+                .setColor(Color.decode("0x2a9690"))
+                .setTitle(title)
+                .setDescription(messagePart)
+                .build())
           }
 
   fun Message.respondWith(embed: MessageEmbed) =
