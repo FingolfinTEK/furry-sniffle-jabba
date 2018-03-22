@@ -10,13 +10,14 @@ data class PlayerTeamCollection(
 
 data class Team(
     val name: String,
-    val units: List<CollectedUnit>) {
+    val units: List<CollectedUnit>)
+  : Serializable {
 
   fun power(): Int {
     return units.map { it.power }.sum()
   }
 
   override fun toString(): String {
-    return "__$name (${power()} GP)__\n${units.joinToString("\n\t", "\t") { it.unit.name }}"
+    return "__$name (${power()/1000}k GP)__\n${units.joinToString("\n\t", "\t") { it.unit.name }}"
   }
 }
