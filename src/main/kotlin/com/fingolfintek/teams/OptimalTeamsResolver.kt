@@ -1,45 +1,66 @@
 package com.fingolfintek.teams
 
-import com.google.common.collect.Collections2
+import com.fingolfintek.swgohgg.player.CollectedUnit
 import io.vavr.Tuple
 import io.vavr.collection.Stream
+import io.vavr.control.Option
+import org.apache.commons.collections4.CollectionUtils
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Component
+import java.util.Comparator.comparing
 
 @Component
 open class OptimalTeamsResolver {
 
   @Cacheable(cacheNames = arrayOf("teams"), key = "#compatibleTeams.sha1()")
   open fun resolveOptimalTeamsFor(compatibleTeams: PlayerTeamCollection): List<Team> {
-    val compatibleUnitsByName = Stream
-        .ofAll(compatibleTeams.teams)
+    val teams = Stream.ofAll(compatibleTeams.teams)
+
+    val roster = teams
         .flatMap { it.units }
         .toMap { Tuple.of(it.unit.name, it) }
         .toJavaMap()
 
-    return Stream
-        .ofAll(Collections2.permutations(compatibleTeams.teams))
-        .map { teams ->
-          val tmpRoster = HashMap(compatibleUnitsByName)
+    val sortedOptimalTeams = teams
+        .flatMap { generateRecursive(it, teams, roster) }
+        .sorted(comparing<Stream<Team>, Int> { it.size() }.reversed())
 
-          teams.filter {
-            val teamSupported = it.units
-                .map { tmpRoster.contains(it.unit.name) }
-                .reduce { acc, b -> acc && b }
+    val first = sortedOptimalTeams.head()
 
-            if (teamSupported) {
-              it.units.forEach { tmpRoster.remove(it.unit.name) }
-            }
-
-            teamSupported
-          }
-        }
-        .sorted(Comparator
-            .comparing<List<Team>, Int> { it.size }
-            .reversed()
-            .thenByDescending { it.map { it.power() }.sum() }
-        )
+    return sortedOptimalTeams
+        .filter { it.size() == first.size() }
+        .sorted(comparing<Stream<Team>, Int> {
+          it.map { it.power() }.sum().toInt()
+        }.reversed())
         .head()
-
+        .toJavaList()
   }
+
+  private fun generateRecursive(
+      start: Team, seedTeams: Stream<Team>, roster: Map<String, CollectedUnit>
+  ): Stream<Stream<Team>> {
+
+    val currentTeam = Option.of(start)
+        .filter { it.supportedIn(roster) }
+
+    val remainingRoster = currentTeam
+        .map { team -> roster.filterKeys { !team.unitNames.contains(it) } }
+        .getOrElse { roster }
+
+    val newSeed = seedTeams.remove(start)
+        .filter { it.supportedIn(remainingRoster) }
+
+    return if (newSeed.isEmpty)
+      currentTeam.map { Stream.of(Stream.of(it)) }.getOrElse { Stream.empty() }
+    else newSeed.flatMap {
+      val generated = generateRecursive(it, newSeed, remainingRoster)
+      return@flatMap currentTeam
+          .map { team -> generated.map { it.prepend(team) } }
+          .getOrElse { generated }
+    }
+  }
+
+  private fun Team.supportedIn(inventory: Map<String, CollectedUnit>): Boolean =
+      CollectionUtils.containsAll(inventory.keys, unitNames)
+
 }

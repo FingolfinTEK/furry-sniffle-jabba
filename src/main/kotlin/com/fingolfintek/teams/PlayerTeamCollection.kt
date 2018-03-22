@@ -23,6 +23,8 @@ data class Team(
     val units: List<CollectedUnit>)
   : Serializable {
 
+  val unitNames: Set<String> = units.map { it.unit.name }.toSet()
+
   fun power(): Int {
     return units.map { it.power }.sum()
   }
