@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 @Component
 open class OptimalTeamsResolver {
 
-  @Cacheable(cacheNames = arrayOf("teams"), key = "#compatibleTeams.name")
+  @Cacheable(cacheNames = arrayOf("teams"), key = "#compatibleTeams.sha1()")
   open fun resolveOptimalTeamsFor(compatibleTeams: PlayerTeamCollection): List<Team> {
     val compatibleUnitsByName = Stream
         .ofAll(compatibleTeams.teams)

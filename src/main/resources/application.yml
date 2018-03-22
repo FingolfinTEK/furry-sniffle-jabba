@@ -15,9 +15,9 @@ teams:
     defense:
       defaultRequirements:
         minLevel: 80
-        minCharPower: 13000
+        minCharPower: 12000
         minRarity: 7
-        minGearLevel: 11
+        minGearLevel: 10
         minTotalPower: 75000
 
       characterRequirements:
@@ -70,6 +70,23 @@ teams:
 
         Fives:
           minGearLevel: 9
+
+        Old Ben:
+          minGearLevel: 9
+
+        CHS:
+          minRarity: 6
+          minGearLevel: 9
+
+        Wampa:
+          minRarity: 6
+
+        Rex:
+          minGearLevel: 11
+
+        Talzin:
+          minRarity: 3
+          minGearLevel: 11
 
       templates:
         RJT Kenobis:
@@ -149,12 +166,47 @@ teams:
           - name: Nihilus
           - name: GK
 
+        zEP Blue Sion:
+          - name: EP
+          - name: Vader
+          - name: Sion
+          - name: Nihilus
+          - name: GAT
+
         zEP Anti Crit:
           - name: EP
           - name: Vader
           - name: Nihilus
           - name: Shore
           - name: GK
+
+        zEP Blue Unmasked:
+          - name: EP
+          - name: Vader
+          - name: Nihilus
+          - name: GAT
+          - name: Kylo Ren (Unmasked)
+
+        zEP Unmasked Shore:
+          - name: EP
+          - name: Vader
+          - name: Nihilus
+          - name: Shore
+          - name: Kylo Ren (Unmasked)
+
+        zEP GK Unmasked:
+          - name: EP
+          - name: Vader
+          - name: Nihilus
+          - name: GK
+          - name: Kylo Ren (Unmasked)
+
+        zEP Sion Unmasked:
+          - name: EP
+          - name: Vader
+          - name: Nihilus
+          - name: Sion
+          - name: Kylo Ren (Unmasked)
 
         zEP Nightmare:
           - name: EP
@@ -191,12 +243,17 @@ teams:
           - name: Chirrut
           - name: GAT
 
+        CLS Hoth Chaze:
+          - name: CLS
+          - name: Han Solo
+          - name: Baze
+          - name: Chirrut
+          - name: CHS
+
         CLS Hans:
           - name: CLS
           - name: Han Solo
           - name: CHS
-            requirements:
-              minGearLevel: 10
           - name: STH
           - name: Old Ben
 
@@ -207,7 +264,7 @@ teams:
           - name: STH
           - name: Old Ben
 
-        CLS R1:
+        CLS Pathfinders:
           - name: CLS
           - name: Han Solo
           - name: Baze
@@ -270,3 +327,23 @@ teams:
           - name: GMY
           - name: Windu
 
+        Rex-wan-Tampa Unmasked:
+          - name: Rex
+          - name: Talzin
+          - name: Old Ben
+          - name: Wampa
+          - name: Kylo Ren (Unmasked)
+
+        Rex-wan-Tampa GK:
+          - name: Rex
+          - name: Talzin
+          - name: Old Ben
+          - name: Wampa
+          - name: GK
+
+        Rex-wan-Tampa:
+          - name: Rex
+          - name: Talzin
+          - name: Old Ben
+          - name: Wampa
+          - name: Shore
