@@ -31,9 +31,9 @@ open class ShipPlatoonHandler(
 
           unitRepository.searchByName(name)
               .map { toPriorityListOfMembersHavingShipAt(message.channel.id, it, rarity, limit) }
-              .peek { message.respondWith(it) }
+              .peek { message.respondWithEmbed("Squadron report", it) }
               .onEmpty {
-                message.respondWith("No members found that have $name at $rarity*")
+                message.respondWithEmbed("Squadron report", "No members found that have $name at $rarity*")
               }
         })
 

@@ -17,6 +17,6 @@ data class Team(
   }
 
   override fun toString(): String {
-    return "$name (${power()} GP)\n${units.joinToString("\n\t", "\t") { it.unit.name }}"
+    return "__$name (${power()} GP)__\n${units.joinToString("\n\t", "\t") { it.unit.name }}"
   }
 }

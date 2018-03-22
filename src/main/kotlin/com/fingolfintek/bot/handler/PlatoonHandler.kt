@@ -31,12 +31,12 @@ open class PlatoonHandler(
 
           unitRepository.searchByName(name)
               .map { toPriorityListOfMembersHavingUnitAt(message.channel.id, it, rarity, limit) }
-              .peek { message.respondWith(it) }
+              .peek { message.respondWithEmbed("Platoon report", it) }
               .onEmpty {
-                message.respondWith("No members found that have $name at $rarity*")
+                message.respondWithEmbed("Platoon report", "No members found that have $name at $rarity*")
               }
         })
-        .onFailure { message.respondWith("Error processing message: ${it.message}") }
+        .onFailure { message.respondWithEmbed("Platoon report", "Error processing message: ${it.message}") }
   }
 
   private fun toPriorityListOfMembersHavingUnitAt(

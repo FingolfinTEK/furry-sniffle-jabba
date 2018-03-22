@@ -52,8 +52,6 @@ teams:
 
         Sith Trooper:
           minRarity: 5
-          minGearLevel: 10
-          minCharPower: 12000
 
         Shore:
           minRarity: 5
@@ -123,11 +121,39 @@ teams:
           - name: Nihilus
           - name: Shore
 
+        zEP Empire Strike Force:
+          - name: EP
+          - name: Vader
+          - name: GAT
+          - name: Tarkin
+          - name: Shore
+
+        zEP Tarkin Doctrine:
+          - name: EP
+          - name: Nihilus
+          - name: GAT
+          - name: Tarkin
+          - name: Shore
+
+        zEP Tarkin Sion:
+          - name: EP
+          - name: Nihilus
+          - name: Vader
+          - name: Tarkin
+          - name: Sion
+
         zEP GK Sion:
           - name: EP
           - name: Vader
           - name: Sion
           - name: Nihilus
+          - name: GK
+
+        zEP Anti Crit:
+          - name: EP
+          - name: Vader
+          - name: Nihilus
+          - name: Shore
           - name: GK
 
         zEP Nightmare:

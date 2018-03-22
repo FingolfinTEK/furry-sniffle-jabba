@@ -10,7 +10,9 @@ import io.vavr.Tuple
 import io.vavr.collection.Stream
 import io.vavr.control.Try
 import net.dv8tion.jda.core.entities.Message
+import net.dv8tion.jda.core.entities.impl.MessageEmbedImpl
 import org.springframework.stereotype.Component
+import java.awt.Color
 import java.util.function.Consumer
 
 @Component
@@ -41,17 +43,27 @@ open class PlayerTwDefenseHandler(
           } else
             processTeamsFor(guildRoster[playerName]!!, message)
         })
-        .onFailure { message.respondWith("Error processing message: ${it.message}") }
+        .onFailure { message.respondWithEmbed("Territory War", "Error processing message: ${it.message}") }
   }
 
   private fun processTeamsFor(roster: PlayerCollection, message: Message) {
     val compatibleTeams = compatibleTeamsFor(roster)
-    val compatibleTeamsMessage = compatibleTeams.teams.joinToString("\n\n") { "$it" }
-    message.respondWith("${roster.name}'s compatible teams\n\n$compatibleTeamsMessage")
+
+    val compatibleTeamsMessage = MessageEmbedImpl()
+    compatibleTeamsMessage.color = Color.decode("0x2a9690")
+    compatibleTeamsMessage.fields = emptyList()
+    compatibleTeamsMessage.title = "${roster.name}'s compatible teams"
+    compatibleTeamsMessage.description = compatibleTeams.teams.joinToString("\n\n") { "$it" }
+    message.respondWith(compatibleTeamsMessage)
 
     val optimalTeams = resolveOptimalTeamsFor(compatibleTeams)
-    val teamsMessage = optimalTeams.joinToString("\n\n") { "$it" }
-    message.respondWith("${roster.name}'s optimal teams\n\n$teamsMessage")
+
+    val optimalTeamsMessage = MessageEmbedImpl()
+    optimalTeamsMessage.fields = emptyList()
+    optimalTeamsMessage.color = Color.decode("0x2a9690")
+    optimalTeamsMessage.title = "${roster.name}'s optimal teams"
+    optimalTeamsMessage.description = optimalTeams.joinToString("\n\n") { "$it" }
+    message.respondWith(optimalTeamsMessage)
   }
 
   private fun compatibleTeamsFor(roster: PlayerCollection) =
