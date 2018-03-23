@@ -24,11 +24,11 @@ open class PlayerTwDefenseHandler(
 
   private val messageRegex = Regex(
       "!tw\\s+defense\\s*(.+)?",
-      RegexOption.IGNORE_CASE
+      setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL)
   )
 
   override fun isApplicableTo(message: Message): Boolean =
-      message.content.matches(messageRegex)
+      message.content.trim().matches(messageRegex)
 
   override fun processMessage(message: Message) {
     Try.ofSupplier { messageRegex.matchEntire(message.content)!! }

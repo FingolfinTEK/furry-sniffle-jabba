@@ -41,6 +41,12 @@ teams:
         Barris:
           minCharPower: 17500
 
+        Maul:
+          minCharPower: 17500
+
+        Kylo Ren:
+          minCharPower: 17500
+
         Rey (Scavenger):
           minCharPower: 15000
 
@@ -63,6 +69,9 @@ teams:
           minRarity: 3
 
         Nihilus:
+          minRarity: 3
+
+        Sith Assassin:
           minRarity: 3
 
         Hermit Yoda:
@@ -145,19 +154,26 @@ teams:
           - name: Tarkin
           - name: Shore
 
-        zEP Tarkin Doctrine:
+        zEP Tarkin Annihilation:
           - name: EP
           - name: Nihilus
           - name: GAT
           - name: Tarkin
           - name: Shore
 
-        zEP Tarkin Sion:
+        zEP Tarkin Sionihilation:
           - name: EP
           - name: Nihilus
           - name: Vader
           - name: Tarkin
           - name: Sion
+
+        zEP Imperial GK:
+          - name: EP
+          - name: Vader
+          - name: GAT
+          - name: Tarkin
+          - name: GK
 
         zEP GK Sion:
           - name: EP
@@ -213,6 +229,13 @@ teams:
           - name: Vader
           - name: Sion
           - name: Nihilus
+          - name: Sith Trooper
+
+        zEP Old meets New:
+          - name: EP
+          - name: Vader
+          - name: Nihilus
+          - name: Sith Assassin
           - name: Sith Trooper
 
         CLS Fulcrums:
@@ -347,3 +370,45 @@ teams:
           - name: Old Ben
           - name: Wampa
           - name: Shore
+
+        Zaul Mainstream:
+          - name: Maul
+          - name: Opress
+          - name: Nihilus
+          - name: Sith Assassin
+          - name: Sith Trooper
+
+        Zaul Master and Apprentice:
+          - name: Maul
+          - name: Opress
+          - name: Sidious
+          - name: Sith Assassin
+          - name: Sith Trooper
+
+        Zaul Empireror (Master and Apprentice 2):
+          - name: Maul
+          - name: Opress
+          - name: EP
+          - name: Sith Assassin
+          - name: Sith Trooper
+
+        Zaul Kylo:
+          - name: Maul
+          - name: Opress
+          - name: Sith Assassin
+          - name: Nihilus
+          - name: Kylo Ren
+
+        Zaul Offense is the best Defense:
+          - name: Maul
+          - name: Opress
+          - name: Sith Assassin
+          - name: Nihilus
+          - name: Sidious
+
+        Zaul Jedi Assasins:
+          - name: Maul
+          - name: Opress
+          - name: Dooku
+          - name: Sidious
+          - name: Sith Assassin
