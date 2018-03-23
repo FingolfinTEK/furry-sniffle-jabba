@@ -34,7 +34,7 @@ open class PlayerTwDefenseHandler(
     Try.ofSupplier { messageRegex.matchEntire(message.content)!! }
         .andThen(Consumer {
 
-          val playerName = it.groupValues[1]
+          val playerName = it.groupValues[1].trim()
 
           val guildRoster = guildChannelRepository
               .getRosterForChannel(message.channel.id)
