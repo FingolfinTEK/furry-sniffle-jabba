@@ -5,14 +5,12 @@ import io.vavr.Tuple
 import io.vavr.collection.Stream
 import io.vavr.control.Option
 import org.apache.commons.collections4.CollectionUtils
-import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Component
 import java.util.Comparator.comparing
 
 @Component
 open class OptimalTeamsResolver {
 
-  @Cacheable(cacheNames = arrayOf("teams"), key = "#compatibleTeams.sha1()")
   open fun resolveOptimalTeamsFor(compatibleTeams: PlayerTeamCollection): List<Team> {
     val teams = Stream.ofAll(compatibleTeams.teams)
 

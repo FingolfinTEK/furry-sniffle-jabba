@@ -371,6 +371,13 @@ teams:
           - name: Wampa
           - name: Shore
 
+        Wampa cleanse:
+          - name: Rex
+          - name: GAT
+          - name: Nihilus
+          - name: Wampa
+          - name: GK
+
         Zaul Mainstream:
           - name: Maul
           - name: Opress
