@@ -19,7 +19,7 @@ open class GuildRepository(
 
   private val logger = LoggerFactory.getLogger(javaClass)
 
-  @Cacheable(cacheNames = arrayOf("guilds"), key = "#swgohGgUrl")
+  @Cacheable(cacheNames = ["guilds"], key = "#swgohGgUrl")
   open fun getForGuildUrl(swgohGgUrl: String): Map<String, PlayerCollection> {
     logger.info("Fetching rosters for $swgohGgUrl")
 
