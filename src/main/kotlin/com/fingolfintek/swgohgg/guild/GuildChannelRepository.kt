@@ -5,7 +5,6 @@ import io.vavr.collection.Stream
 import io.vavr.control.Try
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Component
-import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import javax.annotation.PostConstruct
 
@@ -28,9 +27,6 @@ open class GuildChannelRepository(
 
   open fun getRosterForChannel(channelId: String): Map<String, PlayerCollection> =
       collectionsByChannel[channelId]?.roster?.toJavaMap() ?: emptyMap()
-
-  open fun collectionsByChannel(): Map<String, GuildRoster> =
-      Collections.unmodifiableMap(collectionsByChannel)
 
   @PostConstruct
   private fun populateFromRedis() {
