@@ -2,10 +2,6 @@ discord:
   bot:
     token: your-token-here
 
-guild:
-  refresh:
-    delay: 3600000
-
 spring:
   cache:
     type: redis
@@ -47,6 +43,9 @@ teams:
         Kylo Ren:
           minCharPower: 17500
 
+        Qui-Gon Jinn:
+          minCharPower: 17500
+
         Rey (Scavenger):
           minCharPower: 15000
 
@@ -58,9 +57,11 @@ teams:
 
         Sith Trooper:
           minRarity: 5
+          minCharPower: 11000
 
         Shore:
           minRarity: 5
+          minCharPower: 11000
 
         Holdo:
           minRarity: 3
@@ -196,6 +197,13 @@ teams:
           - name: Shore
           - name: GK
 
+        zEP Blue Anti Crit:
+          - name: EP
+          - name: Vader
+          - name: GAT
+          - name: Shore
+          - name: GK
+
         zEP Blue Unmasked:
           - name: EP
           - name: Vader
@@ -207,7 +215,7 @@ teams:
           - name: EP
           - name: Vader
           - name: Nihilus
-          - name: Shore
+          - name:
           - name: Kylo Ren (Unmasked)
 
         zEP GK Unmasked:
@@ -419,3 +427,95 @@ teams:
           - name: Dooku
           - name: Sidious
           - name: Sith Assassin
+
+        zQGJ Clone Wars:
+          - name: Qui-Gon Jinn
+          - name: R2-D2
+          - name: GK
+          - name: JKA
+          - name: GMY
+
+        zQGJ Stun Wars:
+          - name: Qui-Gon Jinn
+          - name: R2-D2
+          - name: GK
+          - name: JKA
+          - name: Aayla
+
+        zQGJ Hermit Wars:
+          - name: Qui-Gon Jinn
+          - name: R2-D2
+          - name: GK
+          - name: JKA
+          - name: Hermit Yoda
+
+        zQGJ Hermit Ezra:
+          - name: Qui-Gon Jinn
+          - name: R2-D2
+          - name: GK
+          - name: Ezra
+          - name: Hermit Yoda
+
+        zQGJ Hermit Phoenix:
+          - name: Qui-Gon Jinn
+          - name: R2-D2
+          - name: Kanan
+          - name: Ezra
+          - name: Hermit Yoda
+
+        zQGJ Hermit Phoenix Tanks:
+          - name: Qui-Gon Jinn
+          - name: GK
+          - name: Kanan
+          - name: Ezra
+          - name: Hermit Yoda
+
+        zQGJ Hermit Phoenix Stuns:
+          - name: Qui-Gon Jinn
+          - name: Aayla
+          - name: Kanan
+          - name: Ezra
+          - name: Hermit Yoda
+
+        zQGJ Old Stun Wars:
+          - name: Qui-Gon Jinn
+          - name: R2-D2
+          - name: Old Ben
+            minGearLevel: 9
+          - name: JKA
+          - name: Aayla
+
+        Phoenix wo Chopper:
+          - name: Hera
+          - name: Kanan
+          - name: Zeb
+          - name: Ezra
+          - name: Sabine
+
+        Phoenix wo Sabine:
+          - name: Hera
+          - name: Kanan
+          - name: Zeb
+          - name: Ezra
+          - name: Chopper
+
+        Phoenix wo Zeb:
+          - name: Hera
+          - name: Kanan
+          - name: Sabine
+          - name: Ezra
+          - name: Chopper
+
+        Phoenix wo Kanan:
+          - name: Hera
+          - name: Zeb
+          - name: Sabine
+          - name: Ezra
+          - name: Chopper
+
+        Phoenix wo Ezra:
+          - name: Hera
+          - name: Zeb
+          - name: Sabine
+          - name: Kanan
+          - name: Chopper
