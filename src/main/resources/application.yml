@@ -215,7 +215,7 @@ teams:
           - name: EP
           - name: Vader
           - name: Nihilus
-          - name:
+          - name: Shore
           - name: Kylo Ren (Unmasked)
 
         zEP GK Unmasked:
@@ -281,18 +281,32 @@ teams:
           - name: Chirrut
           - name: CHS
 
+        CLS Stormtrooper Chaze:
+          - name: CLS
+          - name: Han Solo
+          - name: Baze
+          - name: Chirrut
+          - name: Stormtrooper Han
+
+        CLS Ben Chazing Wabbits:
+          - name: CLS
+          - name: Han Solo
+          - name: Baze
+          - name: Chirrut
+          - name: Old Ben
+
         CLS Hans:
           - name: CLS
           - name: Han Solo
           - name: CHS
-          - name: STH
+          - name: Stormtrooper Han
           - name: Old Ben
 
         CLS Hope:
           - name: CLS
           - name: Han Solo
           - name: Princess Leia
-          - name: STH
+          - name: Stormtrooper Han
           - name: Old Ben
 
         CLS Pathfinders:
@@ -321,7 +335,7 @@ teams:
           - name: Barris
           - name: Sun Fac
           - name: Fives
-          - name: STH
+          - name: Stormtrooper Han
 
         GK-Zarriss countering tanks:
           - name: GK
