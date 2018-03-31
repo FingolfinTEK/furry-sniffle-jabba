@@ -4,7 +4,6 @@ import com.fingolfintek.swgohgg.guild.GuildChannelRepository
 import com.fingolfintek.swgohgg.player.PlayerCollection
 import com.fingolfintek.teams.OptimalTeamsResolver
 import com.fingolfintek.teams.Team
-import com.fingolfintek.teams.Teams
 import io.vavr.Tuple2
 import io.vavr.collection.Stream
 import io.vavr.control.Try
@@ -19,9 +18,8 @@ import java.util.function.Consumer
 
 @Component
 open class GuildTwDefenseHandler(
-    private val teamDefinitions: Teams,
     private val guildChannelRepository: GuildChannelRepository,
-    private val optimalTeamsResolver: OptimalTeamsResolver
+    private val teamsResolver: OptimalTeamsResolver
 ) : MessageHandler {
 
   private val messageRegex = Regex(
@@ -71,8 +69,8 @@ open class GuildTwDefenseHandler(
     header.createCell(1).setCellValue("Compatible teams")
     header.createCell(5).setCellValue("Optimal teams")
 
-    val compatibleTeams = compatibleTeamsFor(it.value)
-    val optimalTeams = optimalTeamsResolver.resolveOptimalTeamsFor(compatibleTeams)
+    val compatibleTeams = teamsResolver.compatibleTeamsFor(it.value)
+    val optimalTeams = teamsResolver.resolveOptimalTeamsFor(compatibleTeams)
 
     Stream.ofAll(compatibleTeams.teams)
         .zipWithIndex()
@@ -101,8 +99,5 @@ open class GuildTwDefenseHandler(
   }
 
   private fun String.safe() = WorkbookUtil.createSafeSheetName(this)
-
-  private fun compatibleTeamsFor(roster: PlayerCollection) =
-      teamDefinitions.tw.defense.compatibleTeamsFor(roster)
 
 }

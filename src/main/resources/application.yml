@@ -18,12 +18,12 @@ teams:
 
       characterRequirements:
         RJT:
-          minCharPower: 20000
-          minGearLevel: 10
+          minCharPower: 15000
+          zetas:
+            - Inspirational Presence
 
         CLS:
           minCharPower: 17500
-          minGearLevel: 10
 
         Han Solo:
           minCharPower: 17500

@@ -1,15 +1,21 @@
 package com.fingolfintek
 
+import Protos.AuthGuestRequestOuterClass.AuthGuestRequest
+import Protos.AuthGuestResponseOuterClass.AuthGuestResponse
+import Protos.RequestEnvelopeOuterClass.AcceptEncoding
+import Protos.RequestEnvelopeOuterClass.RequestEnvelope
+import Protos.ResponseEnvelopeOuterClass.ResponseEnvelope
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fingolfintek.bot.BotProperties
+import com.google.common.collect.ImmutableMap
 import io.vavr.jackson.datatype.VavrModule
 import net.dv8tion.jda.core.AccountType
 import net.dv8tion.jda.core.JDA
 import net.dv8tion.jda.core.JDABuilder
-import org.springframework.boot.SpringApplication
+import org.apache.commons.codec.binary.Hex
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cache.annotation.EnableCaching
@@ -26,6 +32,8 @@ import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler
+import java.io.ByteArrayInputStream
+import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.TimeUnit
 
@@ -87,5 +95,64 @@ open class Application {
 }
 
 fun main(args: Array<String>) {
-  SpringApplication.run(Application::class.java, *args)
+  val request = AuthGuestRequest
+      .newBuilder()
+      .setUid("9d3d228b13795a0cbc68a2510b722060")
+      .setDevicePlatform("Android")
+      .setLanguage("en")
+      .setPlayerName("")
+      .setBundleId("com.ea.game.starwarscapital_row")
+      .setRegion("NA")
+      .setLocalTimeZoneOffsetMinutes(480)
+      .build()
+
+  val serviceName = "AuthRpc"
+  val methodName = "DoAuthGuest"
+  val payload = request.toByteString()
+  var clientStartupTime = (System.currentTimeMillis() / 1000) - 10
+
+  var envelope = RequestEnvelope.newBuilder()
+      .setCorrelationId(0)
+      .setServiceName(serviceName)
+      .setMethodName(methodName)
+      .setPayload(payload)
+      .setClientVersion(181815)
+      .setClientStartupTimestamp(clientStartupTime)
+      .setPlatform("Android")
+      .setRegion("NA")
+      .setClientExternalVersion("0.7.4")
+      .setClientInternalVersion("0.7.181815")
+      .setRequestId(UUID.randomUUID().toString())
+      .setAcceptEncoding(AcceptEncoding.GZIPACCEPTENCODING)
+      .setCurrentClientTime(clientStartupTime + 8)
+      .setNimbleSessionId("201701141659074633725979")
+      .setTimezone("CST")
+      .setCarrier("46000")
+      .setNetworkAccess("W")
+      .setHardwareId("14480")
+      .setAndroidId("9001048633645127")
+      .setSynergyId("10552419550")
+      .setDeviceModel("samsung GT-P5210")
+      .setDeviceId("9d29641dc261454239456122f13de042b3a0cc3f45d4c27e7ddc97b300eb57ae")
+      .build()
+      .toByteArray()
+
+  val body = khttp.post(
+      url = "https://swprod.capitalgames.com/rpc",
+      headers = ImmutableMap.of(
+          "Content-Type", "application/x-protobuf",
+          "X-Unity-Version", "5.3.5p8",
+          "User-Agent", "Dalvik/1.6.0 (Linux; U; Android 4.2.2; GT-P5210 Build/JDQ39E,",
+          "Connection", "Keep-Alive",
+          "Accept-Encoding", "gzip"),
+      data = ByteArrayInputStream(envelope)
+  ).content
+
+  println(Hex.encodeHex(body))
+
+  val responsePayload = ResponseEnvelope.parseFrom(body).payload
+  val response = AuthGuestResponse.parseFrom(responsePayload)
+
+  println(response.toString())
+//  SpringApplication.run(Application::class.java, *args)
 }

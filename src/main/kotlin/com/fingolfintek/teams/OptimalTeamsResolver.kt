@@ -1,16 +1,71 @@
 package com.fingolfintek.teams
 
 import com.fingolfintek.swgohgg.player.CollectedUnit
+import com.fingolfintek.swgohgg.player.PlayerCollection
+import com.fingolfintek.teams.Teams.*
 import io.vavr.Tuple
+import io.vavr.collection.Map
 import io.vavr.collection.Stream
 import io.vavr.control.Option
-import org.apache.commons.collections4.CollectionUtils
 import org.springframework.cache.annotation.Cacheable
+import org.springframework.context.annotation.DependsOn
 import org.springframework.stereotype.Component
 import java.util.Comparator.comparing
 
 @Component
-open class OptimalTeamsResolver {
+@DependsOn("teamsPostProcessor")
+open class OptimalTeamsResolver(
+    private val teamDefinitions: Teams) {
+
+  open fun compatibleTeamsFor(roster: PlayerCollection) =
+      teamDefinitions.tw.defense.compatibleTeamsFor(roster)
+
+  private fun SquadTemplateRequirements.compatibleTeamsFor(
+      collection: PlayerCollection): PlayerTeamCollection {
+
+    val unitsByName = collection.units
+        .toMap { it -> Tuple.of(it.unit.name, it) }
+
+    val teams = templates
+        .filter {
+          it.value.isFulfilledBy(unitsByName) && hasMinTotalPower(it.value, unitsByName)
+        }
+        .map {
+          val units = it.value.map { unitsByName[it.name].get() }
+          return@map Team(it.key, units)
+        }
+
+    return PlayerTeamCollection(collection.name, teams)
+  }
+
+  private fun SquadTemplate.isFulfilledBy(
+      units: Map<String, CollectedUnit>): Boolean {
+
+    val fulfillments = map { unitReq ->
+      units[unitReq.name]
+          .map { unitReq.isFulfilledBy(it) }
+          .getOrElse(false)
+    }
+    return fulfillments.reduce({ b1, b2 -> b1 && b2 })
+  }
+
+  private fun SquadTemplateEntry.isFulfilledBy(unit: CollectedUnit): Boolean {
+    return requirements.isFulfilledBy(unit)
+  }
+
+  private fun CharacterRequirements.isFulfilledBy(unit: CollectedUnit): Boolean {
+    return unit.level >= minLevel
+        && unit.power >= minCharPower
+        && unit.rarity >= minRarity
+        && unit.gear_level >= minGearLevel
+  }
+
+  private fun SquadTemplateRequirements.hasMinTotalPower(
+      squad: SquadTemplate, units: Map<String, CollectedUnit>): Boolean {
+
+    val teamPower = squad.map { units[it.name].map { it.power }.get() }.sum()
+    return teamPower >= defaultRequirements.minTotalPower
+  }
 
   @Cacheable(cacheNames = ["teams"], key = "#compatibleTeams.sha1()")
   open fun resolveOptimalTeamsFor(compatibleTeams: PlayerTeamCollection): List<Team> {
@@ -19,7 +74,6 @@ open class OptimalTeamsResolver {
     val roster = teams
         .flatMap { it.units }
         .toMap { Tuple.of(it.unit.name, it) }
-        .toJavaMap()
 
     return teams
         .flatMap { generateRecursive(it, teams, roster) }
@@ -54,7 +108,7 @@ open class OptimalTeamsResolver {
   }
 
   private fun Team.supportedIn(inventory: Map<String, CollectedUnit>): Boolean =
-      CollectionUtils.containsAll(inventory.keys, unitNames)
+      inventory.keySet().containsAll(unitNames)
 
   private fun byTeamCountThenTotalPower() =
       comparing<Stream<Team>, Int> { it.size() }.reversed()

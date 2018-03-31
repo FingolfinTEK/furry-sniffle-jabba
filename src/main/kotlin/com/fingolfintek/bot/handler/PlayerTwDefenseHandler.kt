@@ -4,7 +4,6 @@ import com.fingolfintek.swgohgg.guild.GuildChannelRepository
 import com.fingolfintek.swgohgg.player.PlayerCollection
 import com.fingolfintek.teams.OptimalTeamsResolver
 import com.fingolfintek.teams.Team
-import com.fingolfintek.teams.Teams
 import io.vavr.control.Try
 import net.dv8tion.jda.core.entities.Message
 import org.springframework.stereotype.Component
@@ -12,9 +11,8 @@ import java.util.function.Consumer
 
 @Component
 open class PlayerTwDefenseHandler(
-    private val teamDefinitions: Teams,
     private val guildChannelRepository: GuildChannelRepository,
-    private val optimalTeamsResolver: OptimalTeamsResolver
+    private val teamsResolver: OptimalTeamsResolver
 ) : MessageHandler {
 
   private val messageRegex = Regex(
@@ -42,12 +40,9 @@ open class PlayerTwDefenseHandler(
         }
   }
 
-  private fun compatibleTeamsFor(roster: PlayerCollection) =
-      teamDefinitions.tw.defense.compatibleTeamsFor(roster)
-
   private fun processTeamsFor(roster: PlayerCollection, verbose: Boolean, message: Message) {
-    val compatibleTeams = compatibleTeamsFor(roster)
-    val optimalTeams = optimalTeamsResolver.resolveOptimalTeamsFor(compatibleTeams)
+    val compatibleTeams = teamsResolver.compatibleTeamsFor(roster)
+    val optimalTeams = teamsResolver.resolveOptimalTeamsFor(compatibleTeams)
 
     if (verbose) {
       message.respondWithEmbed(

@@ -10,7 +10,8 @@ data class CollectedUnit(
     val level: Int,
     val power: Int,
     val gear_level: Int,
-    val combat_type: Int
+    val combat_type: Int,
+    val zetas: Set<String> = emptySet()
 ) : Serializable {
 
   override fun toString(): String = "${unit.name} ${toPowerString()}"
