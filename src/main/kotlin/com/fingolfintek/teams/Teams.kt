@@ -34,7 +34,7 @@ open class Teams {
     var minCharPower: Int = 0
     var minRarity: Int = 0
     var minGearLevel: Int = 0
-    var zetas: List<String> = emptyList()
+    var zetas: List<String> = ArrayList()
 
     override fun toString(): String =
         "CharacterRequirements(" +

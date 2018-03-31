@@ -1,5 +1,0 @@
-package Protos;
-
-message ChannelPermission {
-   optional string channel_id = 1 [default = ""];
-}

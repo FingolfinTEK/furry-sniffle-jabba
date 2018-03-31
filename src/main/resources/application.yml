@@ -29,13 +29,22 @@ teams:
           minCharPower: 17500
 
         BB-8:
-          minCharPower: 17500
+          minCharPower: 15000
+          zetas:
+            - Roll with the Punches
 
         R2-D2:
-          minCharPower: 17500
+          minCharPower: 15000
+          zetas:
+            - Number Crunch
 
         Barris:
           minCharPower: 17500
+
+        EP:
+          minCharPower: 15000
+          zetas:
+            - Emperor of the Galactic Empire
 
         Maul:
           minCharPower: 17500

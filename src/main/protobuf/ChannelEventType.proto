@@ -1,7 +1,0 @@
-
-enum ChannelEventType {
-   INVALID = 0;
-   DEFAULT = 1;
-   CHAT_MESSAGE = 2;
-   ACTIVITY_EVENT = 3;
-}

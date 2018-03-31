@@ -1,5 +1,0 @@
-package Protos;
-
-message ResetWarRequest {
-   repeated string war_id = 1;
-}

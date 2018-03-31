@@ -4,10 +4,10 @@ import com.fingolfintek.swgohgg.guild.GuildChannelRepository
 import com.fingolfintek.swgohgg.player.PlayerCollection
 import com.fingolfintek.teams.OptimalTeamsResolver
 import com.fingolfintek.teams.Team
+import io.vavr.control.Option
 import io.vavr.control.Try
 import net.dv8tion.jda.core.entities.Message
 import org.springframework.stereotype.Component
-import java.util.function.Consumer
 
 @Component
 open class PlayerTwDefenseHandler(
@@ -25,16 +25,19 @@ open class PlayerTwDefenseHandler(
 
   override fun processMessage(message: Message) {
     Try.ofSupplier { messageRegex.matchEntire(message.content)!! }
-        .andThen(Consumer {
-          val playerName = it.groupValues[2].trim()
+        .andThen { match ->
+          val playerName = match.groupValues[2].trim()
 
           val guildRoster = guildChannelRepository
               .getRosterForChannel(message.channel.id)
               .toSortedMap()
 
           message.channel.sendTyping().queue()
-          processTeamsFor(guildRoster[playerName]!!, it.groupValues[1].isNotBlank(), message)
-        })
+
+          Option.of(guildRoster[playerName])
+              .peek { processTeamsFor(it!!, match.groupValues[1].isNotBlank(), message) }
+              .onEmpty { message.respondWith("Player $playerName not found") }
+        }
         .onFailure {
           message.respondWithEmbed("Territory War", "Error processing message: ${it.message}")
         }

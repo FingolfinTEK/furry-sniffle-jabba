@@ -1,5 +1,0 @@
-package Protos;
-
-message TierUpUnitRequest {
-   optional string unit_id = 1 [default = ""];
-}

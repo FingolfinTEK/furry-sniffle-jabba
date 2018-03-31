@@ -1,5 +1,0 @@
-package Protos;
-
-message RemoveMemberRequest {
-   optional string player_id = 1 [default = ""];
-}

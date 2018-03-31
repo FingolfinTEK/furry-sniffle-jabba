@@ -1,5 +1,0 @@
-package Protos;
-
-message DismissContextualMessageRequest {
-   optional string id = 1 [default = ""];
-}

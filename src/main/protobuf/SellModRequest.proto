@@ -1,5 +1,0 @@
-package Protos;
-
-message SellModRequest {
-   repeated string mod_id = 1;
-}

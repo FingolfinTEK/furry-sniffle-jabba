@@ -1,5 +1,0 @@
-package Protos;
-
-message ClearChannelSessionRequest {
-   repeated string auth_id = 1;
-}

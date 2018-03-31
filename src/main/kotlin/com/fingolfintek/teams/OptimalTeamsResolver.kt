@@ -58,6 +58,7 @@ open class OptimalTeamsResolver(
         && unit.power >= minCharPower
         && unit.rarity >= minRarity
         && unit.gear_level >= minGearLevel
+        && unit.zetas.containsAll(zetas)
   }
 
   private fun SquadTemplateRequirements.hasMinTotalPower(

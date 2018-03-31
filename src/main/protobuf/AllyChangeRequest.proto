@@ -1,5 +1,0 @@
-package Protos;
-
-message AllyChangeRequest {
-   repeated string ally_id = 1;
-}

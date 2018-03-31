@@ -1,5 +1,0 @@
-
-enum ChannelEventDataType {
-   MESSAGE_PARAM = 0;
-   RAID_ACTIVITY_START = 1;
-}

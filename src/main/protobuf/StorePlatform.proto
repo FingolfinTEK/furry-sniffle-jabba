@@ -1,8 +1,0 @@
-package Protos;
-
-enum StorePlatform {
-   APPLE = 1;
-   GOOGLE = 2;
-   DEV = 3;
-   FB = 4;
-}

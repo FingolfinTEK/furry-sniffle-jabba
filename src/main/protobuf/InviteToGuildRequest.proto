@@ -1,5 +1,0 @@
-package Protos;
-
-message InviteToGuildRequest {
-   repeated string player_id = 1;
-}

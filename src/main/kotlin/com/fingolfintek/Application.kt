@@ -1,10 +1,10 @@
 package com.fingolfintek
 
-import Protos.AuthGuestRequestOuterClass.AuthGuestRequest
-import Protos.AuthGuestResponseOuterClass.AuthGuestResponse
-import Protos.RequestEnvelopeOuterClass.AcceptEncoding
-import Protos.RequestEnvelopeOuterClass.RequestEnvelope
-import Protos.ResponseEnvelopeOuterClass.ResponseEnvelope
+import Protos.AuthGuestRequestProto.AuthGuestRequest
+import Protos.AuthGuestResponseProto.AuthGuestResponse
+import Protos.RequestEnvelopeProto.AcceptEncoding
+import Protos.RequestEnvelopeProto.RequestEnvelope
+import Protos.ResponseEnvelopeProto.ResponseEnvelope
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
@@ -15,7 +15,6 @@ import io.vavr.jackson.datatype.VavrModule
 import net.dv8tion.jda.core.AccountType
 import net.dv8tion.jda.core.JDA
 import net.dv8tion.jda.core.JDABuilder
-import org.apache.commons.codec.binary.Hex
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cache.annotation.EnableCaching
@@ -109,23 +108,23 @@ fun main(args: Array<String>) {
   val serviceName = "AuthRpc"
   val methodName = "DoAuthGuest"
   val payload = request.toByteString()
-  var clientStartupTime = (System.currentTimeMillis() / 1000) - 10
+  val clientStartupTime = (System.currentTimeMillis() / 1000) - 10
 
-  var envelope = RequestEnvelope.newBuilder()
+  val envelope = RequestEnvelope.newBuilder()
       .setCorrelationId(0)
       .setServiceName(serviceName)
       .setMethodName(methodName)
       .setPayload(payload)
-      .setClientVersion(181815)
+      .setClientVersion(309129)
       .setClientStartupTimestamp(clientStartupTime)
       .setPlatform("Android")
       .setRegion("NA")
-      .setClientExternalVersion("0.7.4")
-      .setClientInternalVersion("0.7.181815")
+      .setClientExternalVersion("0.11.3")
+      .setClientInternalVersion("0.11.309129")
       .setRequestId(UUID.randomUUID().toString())
       .setAcceptEncoding(AcceptEncoding.GZIPACCEPTENCODING)
       .setCurrentClientTime(clientStartupTime + 8)
-      .setNimbleSessionId("201701141659074633725979")
+      .setNimbleSessionId("2018031311659074633725979")
       .setTimezone("CST")
       .setCarrier("46000")
       .setNetworkAccess("W")
@@ -137,7 +136,7 @@ fun main(args: Array<String>) {
       .build()
       .toByteArray()
 
-  val body = khttp.post(
+  val httpResponse = khttp.post(
       url = "https://swprod.capitalgames.com/rpc",
       headers = ImmutableMap.of(
           "Content-Type", "application/x-protobuf",
@@ -146,11 +145,11 @@ fun main(args: Array<String>) {
           "Connection", "Keep-Alive",
           "Accept-Encoding", "gzip"),
       data = ByteArrayInputStream(envelope)
-  ).content
+  )
 
-  println(Hex.encodeHex(body))
+  println("${httpResponse.statusCode}: ${httpResponse.headers}\n${httpResponse.text}")
 
-  val responsePayload = ResponseEnvelope.parseFrom(body).payload
+  val responsePayload = ResponseEnvelope.parseFrom(httpResponse.content).payload
   val response = AuthGuestResponse.parseFrom(responsePayload)
 
   println(response.toString())

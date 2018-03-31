@@ -1,5 +1,0 @@
-package Protos;
-
-message LockModRequest {
-   optional string mod_id = 1 [default = ""];
-}

@@ -1,5 +1,0 @@
-package Protos;
-
-message RevokeGuildInviteRequest {
-   optional string player_id = 1 [default = ""];
-}

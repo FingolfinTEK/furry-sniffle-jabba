@@ -1,5 +1,0 @@
-package Protos;
-
-message LocalizationBundleResponse {
-   optional bytes localization_bundle = 1;
-}

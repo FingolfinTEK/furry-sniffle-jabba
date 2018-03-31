@@ -1,5 +1,0 @@
-package Protos;
-
-message ResetDailyActionCapRequest {
-   optional string id = 1 [default = ""];
-}
