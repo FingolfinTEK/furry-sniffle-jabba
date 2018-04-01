@@ -1,6 +1,0 @@
-package Protos;
-
-message Skill {
-   optional string id = 1 [default = ""];
-   optional int32 tier = 2 [default = 0];
-}

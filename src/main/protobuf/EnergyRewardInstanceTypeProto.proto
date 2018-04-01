@@ -1,5 +1,0 @@
-package Protos;
-
-enum EnergyRewardInstanceType {
-   HOUR_OF_DAY = 1;
-}

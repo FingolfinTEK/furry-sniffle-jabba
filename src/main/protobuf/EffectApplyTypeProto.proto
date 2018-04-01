@@ -1,7 +1,0 @@
-package Protos;
-
-enum EffectApplyType {
-   UNAVOIDABLE = 1;
-   PHYSICAL = 2;
-   MENTAL = 3;
-}

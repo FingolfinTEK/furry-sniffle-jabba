@@ -1,6 +1,0 @@
-
-enum SpecialValue {
-   MOST_POPULAR = 0;
-   BEST_VALUE = 1;
-   NONE = 2;
-}

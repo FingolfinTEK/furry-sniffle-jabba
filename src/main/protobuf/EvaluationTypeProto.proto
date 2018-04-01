@@ -1,6 +1,0 @@
-package Protos;
-
-enum EvaluationType {
-   AND = 1;
-   OR = 2;
-}

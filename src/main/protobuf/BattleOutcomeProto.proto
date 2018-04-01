@@ -1,8 +1,0 @@
-package Protos;
-
-enum BattleOutcome {
-   WIN = 1;
-   LOSS = 2;
-   RETREAT = 3;
-   DRAW = 4;
-}

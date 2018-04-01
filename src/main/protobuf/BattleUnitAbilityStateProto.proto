@@ -1,6 +1,0 @@
-package Protos;
-
-message BattleUnitAbilityState {
-   optional string ability_id = 1 [default = ""];
-   optional int32 cooldown = 2 [default = 0];
-}

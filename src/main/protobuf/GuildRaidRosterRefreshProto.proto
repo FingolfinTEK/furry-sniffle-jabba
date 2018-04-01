@@ -1,6 +1,0 @@
-package Protos;
-
-message GuildRaidRosterRefresh {
-   optional string type = 1 [default = ""];
-   repeated int32 value = 2;
-}

@@ -1,6 +1,0 @@
-package Protos;
-
-message GuildTributeChallenge {
-   optional int64 player_current = 1 [default = 0];
-   optional int64 guild_current = 2 [default = 0];
-}

@@ -1,6 +1,0 @@
-package Protos;
-
-enum CategoryMatchType {
-   MATCH_ALL = 1;
-   MATCH_ANY = 2;
-}

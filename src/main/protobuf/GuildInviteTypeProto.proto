@@ -1,6 +1,0 @@
-package Protos;
-
-enum GuildInviteType {
-   GUILD_JOIN_REQUEST = 1;
-   GUILD_INVITATION = 2;
-}

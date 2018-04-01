@@ -1,5 +1,0 @@
-package Protos;
-
-message InitialDataRequest {
-   optional bool app_start = 1 [default = false];
-}

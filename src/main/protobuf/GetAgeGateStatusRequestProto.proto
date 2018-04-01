@@ -1,5 +1,0 @@
-package Protos;
-
-message GetAgeGateStatusRequest {
-   optional string device_id = 1 [default = ""];
-}

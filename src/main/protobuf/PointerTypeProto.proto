@@ -1,7 +1,0 @@
-package Protos;
-
-enum PointerType {
-   POINT = 1;
-   CLICK = 2;
-   SWIPE = 3;
-}

@@ -1,6 +1,0 @@
-
-enum GuildChallengeRewardType {
-   INVALID = 0;
-   RANKED = 1;
-   COUNT = 2;
-}

@@ -1,7 +1,0 @@
-package Protos;
-
-enum AgeGateStatusEnum {
-   UNSET = 0;
-   PASSED = 1;
-   FAILED = 2;
-}

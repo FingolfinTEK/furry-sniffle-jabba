@@ -1,7 +1,0 @@
-package Protos;
-
-enum EffectDamageType {
-   UNMITIGABLE = 1;
-   ATTACK_DAMAGE = 2;
-   ABILITY_POWER = 3;
-}

@@ -1,7 +1,0 @@
-package Protos;
-
-enum MemberContributionType {
-   CONTRIBUTION_TYPE_COMMENDATION = 1;
-   CONTRIBUTION_TYPE_TRIBUTE = 2;
-   CONTRIBUTION_TYPE_DONATION = 3;
-}

@@ -1,6 +1,0 @@
-
-enum InboxAction {
-   ACCEPT = 0;
-   REJECT = 1;
-   UNDEFINED = 2;
-}

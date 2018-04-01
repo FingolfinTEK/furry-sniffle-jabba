@@ -1,5 +1,0 @@
-
-enum BattleTurnOwner {
-   PLAYER = 0;
-   OPPONENT = 1;
-}

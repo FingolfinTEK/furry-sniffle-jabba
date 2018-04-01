@@ -1,5 +1,0 @@
-package Protos;
-
-message AcceptJoinGuildRequest {
-   optional string player_id = 1 [default = ""];
-}

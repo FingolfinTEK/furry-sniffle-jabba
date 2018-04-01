@@ -1,5 +1,0 @@
-
-enum GuildJoinType {
-   RECOMMENDED = 0;
-   ALLY = 1;
-}

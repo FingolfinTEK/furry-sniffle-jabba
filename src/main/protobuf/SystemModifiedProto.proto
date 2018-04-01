@@ -1,5 +1,0 @@
-
-enum SystemModified {
-   SYSTEM_NONE = 1;
-   UNIT_TRAINING = 2;
-}

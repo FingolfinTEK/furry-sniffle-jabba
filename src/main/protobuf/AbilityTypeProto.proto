@@ -1,6 +1,0 @@
-package Protos;
-
-enum AbilityType {
-   ACTIVATED = 1;
-   PASSIVE = 2;
-}

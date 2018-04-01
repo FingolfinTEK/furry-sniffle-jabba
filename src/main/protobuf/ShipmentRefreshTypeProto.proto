@@ -1,6 +1,0 @@
-package Protos;
-
-enum ShipmentRefreshType {
-   LOCAL = 1;
-   GLOBAL = 2;
-}

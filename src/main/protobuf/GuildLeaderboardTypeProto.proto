@@ -1,6 +1,0 @@
-package Protos;
-
-enum GuildLeaderboardType {
-   GUILD_RAID_ALL_COMP_PTS = 1;
-   GUILD_RAID_COMP_PTS = 2;
-}

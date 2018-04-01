@@ -1,5 +1,0 @@
-
-enum ActionLinkType {
-   INTERNAL = 0;
-   EXTERNAL = 1;
-}

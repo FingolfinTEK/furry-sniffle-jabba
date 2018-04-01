@@ -1,5 +1,0 @@
-package Protos;
-
-enum SubscriptionType {
-   SUBSCRIPTION_DAILY = 1;
-}

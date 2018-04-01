@@ -1,6 +1,0 @@
-package Protos;
-
-message YearMonth {
-   optional uint32 year = 1 [default = 0];
-   optional uint32 month = 2 [default = 0];
-}

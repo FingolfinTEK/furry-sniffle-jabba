@@ -1,7 +1,0 @@
-package Protos;
-
-enum ForceAlignment {
-   NEUTRAL = 1;
-   LIGHT = 2;
-   DARK = 3;
-}

@@ -1,6 +1,0 @@
-package Protos;
-
-enum ChatInteraction {
-   OPEN = 1;
-   CLOSE = 2;
-}

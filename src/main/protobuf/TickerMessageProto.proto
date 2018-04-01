@@ -1,9 +1,0 @@
-package Protos;
-
-enum TickerAppearLocation {
-   HOMEBASE_TICKER = 1;
-   STORE_TICKER = 2;
-}
-message TickerMessage {
-   repeated TickerAppearLocation appear_location = 1;
-}

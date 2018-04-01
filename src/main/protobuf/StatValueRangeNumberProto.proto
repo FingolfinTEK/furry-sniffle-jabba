@@ -1,6 +1,0 @@
-package Protos;
-
-message StatValueRangeNumber {
-   optional int32 value = 1 [default = 0];
-   optional bool inclusive = 2 [default = false];
-}

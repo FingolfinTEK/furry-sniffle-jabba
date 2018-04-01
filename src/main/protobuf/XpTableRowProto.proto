@@ -1,6 +1,0 @@
-package Protos;
-
-message XpTableRow {
-   optional int32 index = 1 [default = 0];
-   optional int32 xp = 2 [default = 0];
-}

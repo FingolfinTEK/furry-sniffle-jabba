@@ -1,7 +1,0 @@
-package Protos;
-
-enum EquipmentType {
-   EQUIPMENT_EQUIPPABLE = 1;
-   EQUIPMENT_UNRELEASED = 2;
-   EQUIPMENT_MATERIAL = 3;
-}
