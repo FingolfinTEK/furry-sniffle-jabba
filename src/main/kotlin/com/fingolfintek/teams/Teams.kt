@@ -1,5 +1,7 @@
 package com.fingolfintek.teams
 
+import com.fingolfintek.swgohgg.player.CollectedUnit
+import io.vavr.Tuple
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.stereotype.Component
 
@@ -18,6 +20,7 @@ open class Teams {
     var templates: Map<String, SquadTemplate> = LinkedHashMap()
   }
 
+
   open class TeamRequirements : CharacterRequirements() {
     var minTotalPower: Int = 0
   }
@@ -26,11 +29,36 @@ open class Teams {
     var tier = 0
     var tags = ArrayList<String>()
     var characters = ArrayList<SquadTemplateEntry>()
+
+    fun isFulfilledBy(units: io.vavr.collection.List<CollectedUnit>): Boolean {
+      return isFulfilledBy(units.toMap { Tuple.of(it.unit.name, it) })
+
+    }
+
+    fun isFulfilledBy(units: io.vavr.collection.Map<String, CollectedUnit>): Boolean {
+      val fulfillments = characters.map { unitReq ->
+        units[unitReq.name]
+            .map { unitReq.isFulfilledBy(it) }
+            .getOrElse(false)
+      }
+      return fulfillments.reduce({ b1, b2 -> b1 && b2 })
+    }
+
+    fun hasMinTotalPower(
+        units: io.vavr.collection.Map<String, CollectedUnit>, minPower: Int): Boolean {
+
+      val teamPower = characters.map { units[it.name].map { it.power }.getOrElse(0) }.sum()
+      return teamPower >= minPower
+    }
   }
 
   open class SquadTemplateEntry {
     var name = ""
     var requirements = CharacterRequirements()
+
+    fun isFulfilledBy(unit: CollectedUnit): Boolean {
+      return requirements.isFulfilledBy(unit)
+    }
   }
 
   open class CharacterRequirements {
@@ -39,6 +67,14 @@ open class Teams {
     var minRarity: Int = 0
     var minGearLevel: Int = 0
     var zetas: List<String> = ArrayList()
+
+    fun isFulfilledBy(unit: CollectedUnit): Boolean {
+      return unit.level >= minLevel
+          && unit.power >= minCharPower
+          && unit.rarity >= minRarity
+          && unit.gear_level >= minGearLevel
+          && unit.zetas.containsAll(zetas)
+    }
 
     override fun toString(): String =
         "CharacterRequirements(" +

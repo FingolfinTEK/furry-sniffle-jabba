@@ -43,10 +43,10 @@ open class ShipPlatoonHandler(
       channelId: String, ship: Unit, rarity: Int, limit: Int): String {
 
     return guildChannelRepository.getRosterForChannel(channelId)
-        .flatMap { entry ->
-          entry.value.units
+        .flatMap { playerCollection ->
+          playerCollection.units
               .filter { it.unit == ship }
-              .map { Tuple.of(entry.key, it) }
+              .map { Tuple.of(playerCollection.name, it) }
         }
         .filter { it._2.unit.combat_type == 2 }
         .filter { it._2.rarity >= rarity }

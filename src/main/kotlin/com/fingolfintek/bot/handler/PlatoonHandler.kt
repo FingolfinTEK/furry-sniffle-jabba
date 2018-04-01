@@ -43,10 +43,10 @@ open class PlatoonHandler(
       channelId: String, unit: Unit, rarity: Int, limit: Int): String {
 
     return guildChannelRepository.getRosterForChannel(channelId)
-        .flatMap { entry ->
-          entry.value.units
+        .flatMap { playerCollection ->
+          playerCollection.units
               .filter { it.unit == unit }
-              .map { Tuple.of(entry.key, it) }
+              .map { Tuple.of(playerCollection.name, it) }
         }
         .filter { it._2.unit.combat_type == 1 }
         .filter { it._2.rarity >= rarity }

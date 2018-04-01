@@ -4,7 +4,7 @@ import com.fingolfintek.swgohgg.player.CollectedUnit
 import java.io.Serializable
 
 data class PlayerTeamCollection(
-    val name: String,
+    val playerName: String,
     val teams: List<Team>
 ) : Serializable {
 

@@ -1,6 +1,7 @@
 package com.fingolfintek.bot.handler
 
 import com.google.common.base.Splitter
+import io.vavr.collection.Stream
 import io.vavr.control.Option
 import io.vavr.control.Try
 import net.dv8tion.jda.core.EmbedBuilder
@@ -36,7 +37,7 @@ interface MessageHandler {
                 )
           }
 
-  fun Message.respondWithEmbed(title: String, response: String) =
+  fun Message.respondWithEmbed(title: String, response: CharSequence) =
       Splitter.fixedLength(2000)
           .trimResults()
           .omitEmptyStrings()
@@ -48,6 +49,25 @@ interface MessageHandler {
                 .setDescription(messagePart)
                 .build())
           }
+
+  fun <T> Message.respondWithEmbed(
+      title: String, responseData: Iterable<T>,
+      transform: ((T) -> CharSequence) = { it.toString() }) {
+
+    val buffer = StringBuilder()
+
+    Stream.ofAll(responseData)
+        .map { transform.invoke(it) }
+        .forEach { messagePart ->
+          if (buffer.length + messagePart.length > 2000) {
+            respondWithEmbed(title, buffer)
+            buffer.setLength(0)
+          } else buffer.append(messagePart)
+        }
+
+    if (buffer.isNotEmpty())
+      respondWithEmbed(title, buffer)
+  }
 
   fun Message.respondWith(embed: MessageEmbed) =
       channel.sendMessage(embed)

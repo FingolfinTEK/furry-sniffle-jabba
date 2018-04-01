@@ -14,7 +14,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.stereotype.Component
 import java.io.ByteArrayOutputStream
-import java.util.function.Consumer
 
 @Component
 open class GuildTwDefenseHandler(
@@ -31,27 +30,19 @@ open class GuildTwDefenseHandler(
       message.content.trim().matches(messageRegex)
 
   override fun processMessage(message: Message) {
-    Try.ofSupplier { messageRegex.matchEntire(message.content)!! }
-        .andThen(Consumer {
-          message.channel.sendTyping().queue()
-
-          val os = writeDefenseToXlsxFor(message)
-
-          message.channel.sendFile(
-              os.toByteArray().inputStream(),
-              "tw_defense.xlsx",
-              MessageBuilder().append("Here are your guild's TW teams").build()
-          ).queue()
-        })
-        .onFailure {
-          message.respondWithEmbed("Territory War", "Error processing message: ${it.message}")
-        }
+    Try.ofSupplier {
+      message.channel.sendTyping().queue()
+      val os = writeDefenseToXlsxFor(message)
+      sendExcelSpreadsheetMessageFor(message, os)
+    }.onFailure { sendFailureMessageFor(message, it) }
   }
 
   private fun writeDefenseToXlsxFor(message: Message): ByteArrayOutputStream {
     val guildRoster = guildChannelRepository
         .getRosterForChannel(message.channel.id)
-        .toSortedMap()
+        .groupBy { it.name }
+        .flatMap { toIndexedNamesWhereDuplicatesExist(it) }
+        .sortedBy { it.name }
 
     val wb = XSSFWorkbook()
     guildRoster.forEach {
@@ -63,14 +54,24 @@ open class GuildTwDefenseHandler(
     return os
   }
 
-  private fun XSSFWorkbook.writePlayerData(it: Map.Entry<String, PlayerCollection>) {
-    val sheet = createSheet(it.key.safe())
+  private fun toIndexedNamesWhereDuplicatesExist(
+      it: Map.Entry<String, List<PlayerCollection>>): List<PlayerCollection> {
+
+    return if (it.value.size == 1) it.value
+    else it.value
+        .mapIndexed { i, collection ->
+          collection.copy(name = "${collection.name}$i")
+        }
+  }
+
+  private fun XSSFWorkbook.writePlayerData(it: PlayerCollection) {
+    val sheet = createSheet(it.name.safe())
     val header = sheet.createRow(1)
     header.createCell(1).setCellValue("Compatible teams")
     header.createCell(5).setCellValue("Optimal teams")
 
-    val compatibleTeams = teamsResolver.compatibleTeamsFor(it.value)
-    val optimalTeams = teamsResolver.resolveOptimalTeamsFor(it.value)
+    val compatibleTeams = teamsResolver.compatibleTeamsFor(it)
+    val optimalTeams = teamsResolver.resolveOptimalTeamsFor(it)
 
     Stream.ofAll(compatibleTeams.teams)
         .zipWithIndex()
@@ -99,5 +100,17 @@ open class GuildTwDefenseHandler(
   }
 
   private fun String.safe() = WorkbookUtil.createSafeSheetName(this)
+
+  private fun sendExcelSpreadsheetMessageFor(message: Message, os: ByteArrayOutputStream) {
+    message.channel.sendFile(
+        os.toByteArray().inputStream(),
+        "tw_defense.xlsx",
+        MessageBuilder().append("Here are your guild's TW teams").build()
+    ).queue()
+  }
+
+  private fun sendFailureMessageFor(message: Message, it: Throwable) {
+    message.respondWithEmbed("Territory War", "Error processing message: ${it.message}")
+  }
 
 }

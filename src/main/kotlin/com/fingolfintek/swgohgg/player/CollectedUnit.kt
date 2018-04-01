@@ -6,6 +6,7 @@ import java.io.Serializable
 data class CollectedUnit(
     val unit: Unit = Unit("", -1, "", -1, -1),
     val player: String,
+    val url: String = "",
     val rarity: Int,
     val level: Int,
     val power: Int,

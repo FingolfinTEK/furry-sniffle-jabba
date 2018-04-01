@@ -8,8 +8,12 @@ import java.nio.charset.Charset
 
 data class PlayerCollection(
     val name: String,
+    val url: String,
     val units: List<CollectedUnit>
 ) : Serializable {
+
+  constructor(units: List<CollectedUnit>)
+      : this(units.first().player, units.first().url, units)
 
   fun sha1(): String {
     return Hashing.sha1()
@@ -22,7 +26,7 @@ data class PlayerCollection(
   fun withZetas(zetas: Map<String, Map<String, Set<String>>>): PlayerCollection {
     return copy(units = units
         .map { unit ->
-          unit.copy(zetas = zetas[name]
+          unit.copy(zetas = zetas[url.removeSuffix("collection/")]
               .map { it[unit.unit.name].getOrElse { emptySet() } }
               .getOrElse { emptySet() }
           )

@@ -2,7 +2,7 @@ package com.fingolfintek.teams
 
 import com.fingolfintek.swgohgg.player.CollectedUnit
 import com.fingolfintek.swgohgg.player.PlayerCollection
-import com.fingolfintek.teams.Teams.*
+import com.fingolfintek.teams.Teams.SquadTemplateRequirements
 import io.vavr.Tuple
 import io.vavr.collection.Map
 import io.vavr.collection.Stream
@@ -42,36 +42,6 @@ open class OptimalTeamsResolver(
         }
 
     return PlayerTeamCollection(collection.name, teams)
-  }
-
-  private fun SquadTemplate.isFulfilledBy(
-      units: Map<String, CollectedUnit>): Boolean {
-
-    val fulfillments = characters.map { unitReq ->
-      units[unitReq.name]
-          .map { unitReq.isFulfilledBy(it) }
-          .getOrElse(false)
-    }
-    return fulfillments.reduce({ b1, b2 -> b1 && b2 })
-  }
-
-  private fun SquadTemplateEntry.isFulfilledBy(unit: CollectedUnit): Boolean {
-    return requirements.isFulfilledBy(unit)
-  }
-
-  private fun CharacterRequirements.isFulfilledBy(unit: CollectedUnit): Boolean {
-    return unit.level >= minLevel
-        && unit.power >= minCharPower
-        && unit.rarity >= minRarity
-        && unit.gear_level >= minGearLevel
-        && unit.zetas.containsAll(zetas)
-  }
-
-  private fun SquadTemplate.hasMinTotalPower(
-      units: Map<String, CollectedUnit>, minPower: Int): Boolean {
-
-    val teamPower = characters.map { units[it.name].map { it.power }.getOrElse(0) }.sum()
-    return teamPower >= minPower
   }
 
   @Cacheable(cacheNames = ["teams"], key = "#collection.sha1()")

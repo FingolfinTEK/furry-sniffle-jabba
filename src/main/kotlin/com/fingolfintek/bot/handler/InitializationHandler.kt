@@ -25,9 +25,14 @@ open class InitializationHandler(
               message.channel.id, swgohGgUrl,
               { sendSuccessMessageFor(message, swgohGgUrl) })
         })
+        .onFailure { sendFailureMessageFor(message, it) }
   }
 
   private fun sendSuccessMessageFor(message: Message, swgohGgUrl: String) =
       message.respondWith("Assigned guild $swgohGgUrl to this channel")
+
+  private fun sendFailureMessageFor(message: Message, it: Throwable) {
+    message.respondWithEmbed("Initialization", "Error processing message: ${it.message}")
+  }
 
 }

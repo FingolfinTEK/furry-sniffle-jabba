@@ -21,35 +21,14 @@ open class GuildRepository(
   private val logger = LoggerFactory.getLogger(javaClass)
 
   @Cacheable(cacheNames = ["guilds"], key = "#swgohGgUrl")
-  open fun getForGuildUrl(swgohGgUrl: String): Map<String, PlayerCollection> {
+  open fun getForGuildUrl(swgohGgUrl: String): List<PlayerCollection> {
     logger.info("Fetching rosters for $swgohGgUrl")
 
-    val zetas = fetchZetaCollectionFor(swgohGgUrl)
-    return fetchCharacterCollectionFor(swgohGgUrl)
-        .mapValues { it.withZetas(zetas) }
-  }
-
-  private fun fetchCharacterCollectionFor(swgohGgUrl: String): Map<String, PlayerCollection> {
-    val guildId = swgohGgUrl
-        .replace("https://swgoh.gg/g/(\\d+)/.+".toRegex(), "$1")
-        .toInt()
-
-    val jsonBody = Jsoup
-        .connect("https://swgoh.gg/api/guilds/$guildId/units/")
-        .ignoreContentType(true)
-        .execute().body()
-
-    return mapper
-        .readValue<Map<String, List<CollectedUnit>>>(jsonBody)
-        .mapKeys { unitRepository.searchById(it) }
-        .map { unit, collection ->
-          Tuple.of(unit, collection.map { c -> c.copy(unit = unit) })
-        }
-        .values()
-        .flatMap { it }
-        .groupBy { it.player }
-        .map { player, collection ->
-          Tuple.of(player, PlayerCollection(player, collection.toList()))
+    return fetchZetaCollectionFor(swgohGgUrl)
+        .let { zetas ->
+          fetchCharacterCollectionFor(swgohGgUrl)
+              .map { it.withZetas(zetas) }
+              .toList()
         }
   }
 
@@ -64,7 +43,7 @@ open class GuildRepository(
         .select(".table > tbody > tr")
         .toVavrMap {
           Tuple.of(
-              it.select("td:nth-child(1)").text(),
+              it.select("td:nth-child(1) a").attr("href"),
               it.select("div.guild-member-zeta")
                   .toVavrMap { zeta ->
                     Tuple.of(
@@ -76,6 +55,55 @@ open class GuildRepository(
                   }
           )
         }
+  }
+
+  private fun fetchCharacterCollectionFor(swgohGgUrl: String): Iterable<PlayerCollection> {
+    val jsonBody = fetchRawJsonFrom(swgohGgUrl)
+    val collectedUnits = parseCollectedUnitsFrom(jsonBody)
+
+    val unitsByPlayerUrl = collectedUnits
+        .groupBy { it.url }
+
+    // bug in swgoh.gg data, no URLs for ships
+    val ships = unitsByPlayerUrl.get("")
+
+    val collections = unitsByPlayerUrl
+        .remove("")
+        .mapValues { collection -> PlayerCollection(collection) }
+        .values()
+
+    return ships.map {
+      val shipsByPlayerName = it.groupBy { it.player }
+      return@map collections.map { collection ->
+        shipsByPlayerName[collection.name]
+            .map { collection.copy(units = collection.units.appendAll(it)) }
+            .getOrElse { collection }
+      }
+    }.getOrElse { collections }
+
+  }
+
+  private fun fetchRawJsonFrom(swgohGgUrl: String): String {
+    val guildId = swgohGgUrl
+        .replace("https://swgoh.gg/g/(\\d+)/.+".toRegex(), "$1")
+        .toInt()
+
+    return Jsoup
+        .connect("https://swgoh.gg/api/guilds/$guildId/units/")
+        .ignoreContentType(true)
+        .execute().body()
+  }
+
+  private fun parseCollectedUnitsFrom(jsonBody: String): io.vavr.collection.List<CollectedUnit> {
+    return mapper
+        .readValue<Map<String, List<CollectedUnit>>>(jsonBody)
+        .mapKeys { unitRepository.searchById(it) }
+        .map { unit, collection ->
+          Tuple.of(unit, collection.map { c -> c.copy(unit = unit) })
+        }
+        .values()
+        .flatMap { it }
+        .toList()
   }
 
 }
