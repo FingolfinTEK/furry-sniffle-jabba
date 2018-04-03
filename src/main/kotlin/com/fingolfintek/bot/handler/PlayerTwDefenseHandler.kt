@@ -7,6 +7,7 @@ import com.fingolfintek.teams.Team
 import io.vavr.control.Option
 import io.vavr.control.Try
 import net.dv8tion.jda.core.entities.Message
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
 @Component
@@ -14,6 +15,8 @@ open class PlayerTwDefenseHandler(
     private val guildChannelRepository: GuildChannelRepository,
     private val teamsResolver: OptimalTeamsResolver
 ) : MessageHandler {
+
+  private val logger = LoggerFactory.getLogger(javaClass)
 
   private val messageRegex = Regex(
       "!tw\\s+(verbose\\s+)?defense\\s*(.+)",
@@ -39,18 +42,18 @@ open class PlayerTwDefenseHandler(
               .onEmpty { message.respondWith("Player $playerName not found") }
         }
         .onFailure {
+          logger.error("Encountered error", it)
           message.respondWithEmbed("Territory War", "Error processing message: ${it.message}")
         }
   }
 
   private fun processTeamsFor(roster: PlayerCollection, verbose: Boolean, message: Message) {
-    val compatibleTeams = teamsResolver.compatibleTeamsFor(roster)
-    val optimalTeams = teamsResolver.resolveOptimalTeamsFor(compatibleTeams)
+    val optimalTeams = teamsResolver.resolveOptimalTeamsFor(roster)
 
     if (verbose) {
       message.respondWithEmbed(
           "${roster.name}'s compatible teams",
-          prettyPrint(compatibleTeams.teams))
+          prettyPrint(teamsResolver.compatibleTeamsFor(roster).teams))
     }
 
     message.respondWithEmbed(

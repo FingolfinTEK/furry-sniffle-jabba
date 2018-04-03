@@ -70,7 +70,7 @@ open class GuildTwDefenseHandler(
     header.createCell(5).setCellValue("Optimal teams")
 
     val compatibleTeams = teamsResolver.compatibleTeamsFor(it.value)
-    val optimalTeams = teamsResolver.resolveOptimalTeamsFor(compatibleTeams)
+    val optimalTeams = teamsResolver.resolveOptimalTeamsFor(it.value)
 
     Stream.ofAll(compatibleTeams.teams)
         .zipWithIndex()

@@ -22,7 +22,11 @@ open class Teams {
     var minTotalPower: Int = 0
   }
 
-  open class SquadTemplate : ArrayList<SquadTemplateEntry>()
+  open class SquadTemplate {
+    var tier = 0
+    var tags = ArrayList<String>()
+    var characters = ArrayList<SquadTemplateEntry>()
+  }
 
   open class SquadTemplateEntry {
     var name = ""

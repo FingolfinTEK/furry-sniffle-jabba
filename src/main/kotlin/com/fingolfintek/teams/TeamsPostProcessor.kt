@@ -51,7 +51,7 @@ open class TeamsPostProcessor(
     characterRequirements.values.forEach { it.populateFrom(defaultRequirements) }
 
     templates = templates.mapValues {
-      it.value.forEach {
+      it.value.characters.forEach {
         val requirements = Option
             .of(characterRequirements[it.name])
             .getOrElse(defaultRequirements)
@@ -63,7 +63,7 @@ open class TeamsPostProcessor(
   }
 
   private fun SquadTemplate.replaceUnitNames(unitRepository: UnitRepository) {
-    forEach {
+    characters.forEach {
       unitRepository.searchByName(it.name)
           .peek { unit -> it.name = unit.name }
     }

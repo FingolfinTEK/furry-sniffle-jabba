@@ -1,22 +1,15 @@
 package com.fingolfintek.teams
 
 import com.fingolfintek.swgohgg.player.CollectedUnit
-import com.google.common.hash.Hashing
 import java.io.Serializable
-import java.nio.charset.Charset
 
 data class PlayerTeamCollection(
     val name: String,
     val teams: List<Team>
 ) : Serializable {
 
-  fun sha1(): String {
-    return Hashing.sha1()
-        .hashString(
-            "$name${teams.joinToString(",") { it.name }}",
-            Charset.defaultCharset())
-        .toString()
-  }
+  fun withoutTeamsThatShareUnitsWith(pickedTeams: Iterable<Team>) =
+      copy(teams = teams.filter { it.noUnitsSharedWith(pickedTeams) })
 }
 
 data class Team(
@@ -25,6 +18,9 @@ data class Team(
   : Serializable {
 
   val unitNames: Set<String> = units.map { it.unit.name }.toSet()
+
+  fun noUnitsSharedWith(teams: Iterable<Team>) =
+      teams.flatMap { it.unitNames }.intersect(unitNames).isEmpty()
 
   fun power(): Int {
     return units.map { it.power }.sum()

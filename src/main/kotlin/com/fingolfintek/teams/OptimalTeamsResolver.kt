@@ -17,21 +17,27 @@ import java.util.Comparator.comparing
 open class OptimalTeamsResolver(
     private val teamDefinitions: Teams) {
 
-  open fun compatibleTeamsFor(roster: PlayerCollection) =
-      teamDefinitions.tw.defense.compatibleTeamsFor(roster)
+  open fun compatibleTeamsFor(roster: PlayerCollection): PlayerTeamCollection {
+    return compatibleTeamsFor(roster, 0)
+  }
+
+  private fun compatibleTeamsFor(roster: PlayerCollection, tier: Int = 0) =
+      teamDefinitions.tw.defense.compatibleTeamsFor(roster, tier)
 
   private fun SquadTemplateRequirements.compatibleTeamsFor(
-      collection: PlayerCollection): PlayerTeamCollection {
+      collection: PlayerCollection, tier: Int = 0): PlayerTeamCollection {
 
     val unitsByName = collection.units
         .toMap { it -> Tuple.of(it.unit.name, it) }
 
     val teams = templates
-        .filter {
-          it.value.isFulfilledBy(unitsByName) && hasMinTotalPower(it.value, unitsByName)
+        .filterValues { tier == 0 || it.tier == tier }
+        .filterValues {
+          it.hasMinTotalPower(unitsByName, defaultRequirements.minTotalPower)
+              && it.isFulfilledBy(unitsByName)
         }
         .map {
-          val units = it.value.map { unitsByName[it.name].get() }
+          val units = it.value.characters.map { unitsByName[it.name].get() }
           return@map Team(it.key, units)
         }
 
@@ -41,7 +47,7 @@ open class OptimalTeamsResolver(
   private fun SquadTemplate.isFulfilledBy(
       units: Map<String, CollectedUnit>): Boolean {
 
-    val fulfillments = map { unitReq ->
+    val fulfillments = characters.map { unitReq ->
       units[unitReq.name]
           .map { unitReq.isFulfilledBy(it) }
           .getOrElse(false)
@@ -61,15 +67,30 @@ open class OptimalTeamsResolver(
         && unit.zetas.containsAll(zetas)
   }
 
-  private fun SquadTemplateRequirements.hasMinTotalPower(
-      squad: SquadTemplate, units: Map<String, CollectedUnit>): Boolean {
+  private fun SquadTemplate.hasMinTotalPower(
+      units: Map<String, CollectedUnit>, minPower: Int): Boolean {
 
-    val teamPower = squad.map { units[it.name].map { it.power }.get() }.sum()
-    return teamPower >= defaultRequirements.minTotalPower
+    val teamPower = characters.map { units[it.name].map { it.power }.getOrElse(0) }.sum()
+    return teamPower >= minPower
   }
 
-  @Cacheable(cacheNames = ["teams"], key = "#compatibleTeams.sha1()")
-  open fun resolveOptimalTeamsFor(compatibleTeams: PlayerTeamCollection): List<Team> {
+  @Cacheable(cacheNames = ["teams"], key = "#collection.sha1()")
+  open fun resolveOptimalTeamsFor(collection: PlayerCollection): List<Team> {
+    val pickedTeams = ArrayList<Team>()
+
+    for (tier in 1..3) {
+      pickedTeams += resolveOptimalTeamsFor(
+          compatibleTeamsFor(collection, tier)
+              .withoutTeamsThatShareUnitsWith(pickedTeams)
+      )
+    }
+
+    return pickedTeams
+  }
+
+  private fun resolveOptimalTeamsFor(
+      compatibleTeams: PlayerTeamCollection): List<Team> {
+
     val teams = Stream.ofAll(compatibleTeams.teams)
 
     val roster = teams
