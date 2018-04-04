@@ -33,8 +33,8 @@ open class OptimalTeamsResolver(
     val teams = templates
         .filterValues { tier == 0 || it.tier == tier }
         .filterValues {
-          it.hasMinTotalPower(unitsByName, defaultRequirements.minTotalPower)
-              && it.isFulfilledBy(unitsByName)
+          it.isFulfilledBy(unitsByName) &&
+              it.hasMinTotalPower(unitsByName, defaultRequirements.minTotalPower)
         }
         .map {
           val units = it.value.characters.map { unitsByName[it.name].get() }

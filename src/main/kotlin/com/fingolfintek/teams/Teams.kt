@@ -1,7 +1,6 @@
 package com.fingolfintek.teams
 
 import com.fingolfintek.swgohgg.player.CollectedUnit
-import io.vavr.Tuple
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.stereotype.Component
 
@@ -29,11 +28,6 @@ open class Teams {
     var tier = 0
     var tags = ArrayList<String>()
     var characters = ArrayList<SquadTemplateEntry>()
-
-    fun isFulfilledBy(units: io.vavr.collection.List<CollectedUnit>): Boolean {
-      return isFulfilledBy(units.toMap { Tuple.of(it.unit.name, it) })
-
-    }
 
     fun isFulfilledBy(units: io.vavr.collection.Map<String, CollectedUnit>): Boolean {
       val fulfillments = characters.map { unitReq ->

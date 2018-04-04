@@ -74,5 +74,6 @@ open class TeamsPostProcessor(
     minCharPower = if (minCharPower == 0) defaults.minCharPower else minCharPower
     minRarity = if (minRarity == 0) defaults.minRarity else minRarity
     minGearLevel = if (minGearLevel == 0) defaults.minGearLevel else minGearLevel
+    zetas = if (zetas.isEmpty()) defaults.zetas else zetas
   }
 }
