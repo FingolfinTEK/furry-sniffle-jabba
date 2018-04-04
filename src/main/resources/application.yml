@@ -198,6 +198,18 @@ teams:
             - name: Nihilus
             - name: Shore
 
+        zEP mainstream GK:
+          tier: 1
+          tags:
+            - TWD
+            - EP
+          characters:
+            - name: EP
+            - name: Vader
+            - name: GAT
+            - name: Nihilus
+            - name: GK
+
         zEP Empire Strike Force:
           tier: 1
           tags:
