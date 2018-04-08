@@ -16,13 +16,13 @@ import org.springframework.stereotype.Component
 import java.io.ByteArrayOutputStream
 
 @Component
-open class GuildTwDefenseHandler(
+open class GuildTeamsHandler(
     private val guildChannelRepository: GuildChannelRepository,
     private val teamsResolver: OptimalTeamsResolver
 ) : MessageHandler {
 
   private val messageRegex = Regex(
-      "!tw\\s+defense\\s*",
+      "!teams\\s+(\\w+)\\s*",
       setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL)
   )
 
@@ -30,14 +30,17 @@ open class GuildTwDefenseHandler(
       message.content.trim().matches(messageRegex)
 
   override fun processMessage(message: Message) {
-    Try.ofSupplier {
-      message.channel.sendTyping().queue()
-      val os = writeDefenseToXlsxFor(message)
-      sendExcelSpreadsheetMessageFor(message, os)
-    }.onFailure { sendFailureMessageFor(message, it) }
+    Try.ofSupplier { messageRegex.matchEntire(message.content)!! }
+        .andThen { match ->
+          message.channel.sendTyping().queue()
+          val tag = match.groupValues[1].trim().toUpperCase()
+          val os = writeDefenseToXlsxFor(message, tag)
+          sendExcelSpreadsheetMessageFor(message, os)
+        }
+        .onFailure { sendFailureMessageFor(message, it) }
   }
 
-  private fun writeDefenseToXlsxFor(message: Message): ByteArrayOutputStream {
+  private fun writeDefenseToXlsxFor(message: Message, tag: String): ByteArrayOutputStream {
     val guildRoster = guildChannelRepository
         .getRosterForChannel(message.channel.id)
         .groupBy { it.name }
@@ -46,7 +49,7 @@ open class GuildTwDefenseHandler(
 
     val wb = XSSFWorkbook()
     guildRoster.forEach {
-      wb.writePlayerData(it)
+      wb.writePlayerData(it, tag)
     }
 
     val os = ByteArrayOutputStream()
@@ -64,14 +67,14 @@ open class GuildTwDefenseHandler(
         }
   }
 
-  private fun XSSFWorkbook.writePlayerData(it: PlayerCollection) {
+  private fun XSSFWorkbook.writePlayerData(it: PlayerCollection, tag: String) {
     val sheet = createSheet(it.name.safe())
     val header = sheet.createRow(1)
     header.createCell(1).setCellValue("Compatible teams")
     header.createCell(5).setCellValue("Optimal teams")
 
-    val compatibleTeams = teamsResolver.compatibleTeamsFor(it)
-    val optimalTeams = teamsResolver.resolveOptimalTeamsFor(it)
+    val compatibleTeams = teamsResolver.compatibleTeamsFor(it, tag)
+    val optimalTeams = teamsResolver.resolveOptimalTeamsFor(it, tag)
 
     Stream.ofAll(compatibleTeams.teams)
         .zipWithIndex()

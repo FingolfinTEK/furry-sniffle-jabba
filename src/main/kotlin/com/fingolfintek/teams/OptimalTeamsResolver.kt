@@ -2,7 +2,6 @@ package com.fingolfintek.teams
 
 import com.fingolfintek.swgohgg.player.CollectedUnit
 import com.fingolfintek.swgohgg.player.PlayerCollection
-import com.fingolfintek.teams.Teams.SquadTemplateRequirements
 import io.vavr.Tuple
 import io.vavr.collection.Map
 import io.vavr.collection.Stream
@@ -15,22 +14,23 @@ import java.util.Comparator.comparing
 @Component
 @DependsOn("teamsPostProcessor")
 open class OptimalTeamsResolver(
-    private val teamDefinitions: Teams) {
+    private val teamDefinitions: com.fingolfintek.teams.Teams) {
 
-  open fun compatibleTeamsFor(roster: PlayerCollection): PlayerTeamCollection {
-    return compatibleTeamsFor(roster, 0)
+  open fun compatibleTeamsFor(roster: PlayerCollection, vararg tags: String): PlayerTeamCollection {
+    return compatibleTeamsFor(roster, *tags, tier = 0)
   }
 
-  private fun compatibleTeamsFor(roster: PlayerCollection, tier: Int = 0) =
-      teamDefinitions.tw.defense.compatibleTeamsFor(roster, tier)
+  private fun compatibleTeamsFor(roster: PlayerCollection, vararg tags: String, tier: Int = 0) =
+      teamDefinitions.compatibleTeamsFor(roster, *tags, tier = tier)
 
-  private fun SquadTemplateRequirements.compatibleTeamsFor(
-      collection: PlayerCollection, tier: Int = 0): PlayerTeamCollection {
+  private fun Teams.compatibleTeamsFor(
+      collection: PlayerCollection, vararg tags: String, tier: Int = 0): PlayerTeamCollection {
 
     val unitsByName = collection.units
         .toMap { it -> Tuple.of(it.unit.name, it) }
 
     val teams = templates
+        .filterValues { it.tags.containsAll(tags.toList()) }
         .filterValues { tier == 0 || it.tier == tier }
         .filterValues {
           it.isFulfilledBy(unitsByName) &&
@@ -45,12 +45,12 @@ open class OptimalTeamsResolver(
   }
 
   @Cacheable(cacheNames = ["teams"], key = "#collection.sha1()")
-  open fun resolveOptimalTeamsFor(collection: PlayerCollection): List<Team> {
+  open fun resolveOptimalTeamsFor(collection: PlayerCollection, vararg tags: String): List<Team> {
     val pickedTeams = ArrayList<Team>()
 
     for (tier in 1..3) {
       pickedTeams += resolveOptimalTeamsFor(
-          compatibleTeamsFor(collection, tier)
+          compatibleTeamsFor(collection, *tags, tier = tier)
               .withoutTeamsThatShareUnitsWith(pickedTeams)
       )
     }

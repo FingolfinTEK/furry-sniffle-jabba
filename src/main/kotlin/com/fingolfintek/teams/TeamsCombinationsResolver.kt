@@ -14,7 +14,7 @@ open class TeamsCombinationsResolver(
 
   @PostConstruct
   open fun resolveOptimalTeamsFor() {
-    val teams = HashMap.ofAll(teamDefinitions.tw.defense.templates)
+    val teams = HashMap.ofAll(teamDefinitions.templates)
 
     val roster = teams
         .values()

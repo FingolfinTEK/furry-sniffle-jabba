@@ -12,7 +12,7 @@ open class InitializationHandler(
     private val properties: BotProperties,
     private val guildChannelRepository: GuildChannelRepository) : MessageHandler {
 
-  private val messageRegex = Regex("!tb\\s+init\\s+(http(s)?://.*swgoh.gg.+)")
+  private val messageRegex = Regex("!init\\s+(http(s)?://.*swgoh.gg.+)")
 
   override fun isApplicableTo(message: Message): Boolean =
       properties.isAuthorAnOfficer(message) && message.content.matches(messageRegex)

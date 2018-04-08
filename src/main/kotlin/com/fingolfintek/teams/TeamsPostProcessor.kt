@@ -1,7 +1,8 @@
 package com.fingolfintek.teams
 
 import com.fingolfintek.swgohgg.unit.UnitRepository
-import com.fingolfintek.teams.Teams.*
+import com.fingolfintek.teams.Teams.CharacterRequirements
+import com.fingolfintek.teams.Teams.SquadTemplate
 import io.vavr.control.Option
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
@@ -22,21 +23,13 @@ open class TeamsPostProcessor(
   open fun postProcess(teams: Teams) {
     logger.info(
         "Loaded {} defensive teams for TW",
-        teams.tw.defense.templates.size)
+        teams.templates.size)
 
-    teams.tw.replaceUnitNames(unitRepository)
-    teams.tw.populateDefaults()
+    teams.replaceUnitNames(unitRepository)
+    teams.populateDefaults()
   }
 
-  private fun TerritoryWar.replaceUnitNames(unitRepository: UnitRepository) {
-    defense.replaceUnitNames(unitRepository)
-  }
-
-  private fun TerritoryWar.populateDefaults() {
-    defense.populateDefaults()
-  }
-
-  private fun SquadTemplateRequirements.replaceUnitNames(unitRepository: UnitRepository) {
+  private fun Teams.replaceUnitNames(unitRepository: UnitRepository) {
     templates.values.forEach { it.replaceUnitNames(unitRepository) }
 
     characterRequirements = characterRequirements
@@ -47,7 +40,7 @@ open class TeamsPostProcessor(
         }
   }
 
-  private fun SquadTemplateRequirements.populateDefaults() {
+  private fun Teams.populateDefaults() {
     characterRequirements.values.forEach { it.populateFrom(defaultRequirements) }
 
     templates = templates.mapValues {

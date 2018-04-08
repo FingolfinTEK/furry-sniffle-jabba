@@ -7,18 +7,9 @@ import org.springframework.stereotype.Component
 @Component
 @ConfigurationProperties("teams")
 open class Teams {
-  var tw = TerritoryWar()
-
-  open class TerritoryWar {
-    var defense = SquadTemplateRequirements()
-  }
-
-  open class SquadTemplateRequirements {
-    var defaultRequirements = TeamRequirements()
-    var characterRequirements: Map<String, CharacterRequirements> = LinkedHashMap()
-    var templates: Map<String, SquadTemplate> = LinkedHashMap()
-  }
-
+  var defaultRequirements = TeamRequirements()
+  var characterRequirements: Map<String, CharacterRequirements> = LinkedHashMap()
+  var templates: Map<String, SquadTemplate> = LinkedHashMap()
 
   open class TeamRequirements : CharacterRequirements() {
     var minTotalPower: Int = 0

@@ -7,866 +7,864 @@ spring:
     type: redis
 
 teams:
-  tw:
-    defense:
-      defaultRequirements:
-        minLevel: 80
-        minCharPower: 12000
-        minRarity: 7
-        minGearLevel: 10
-        minTotalPower: 75000
+  defaultRequirements:
+    minLevel: 80
+    minCharPower: 12000
+    minRarity: 7
+    minGearLevel: 10
+    minTotalPower: 75000
 
-      characterRequirements:
-        RJT:
-          minCharPower: 15000
-          zetas:
-            - Inspirational Presence
+  characterRequirements:
+    RJT:
+      minCharPower: 15000
+      zetas:
+        - Inspirational Presence
 
-        CLS:
-          minCharPower: 17500
+    CLS:
+      minCharPower: 17500
 
-        Han Solo:
-          minCharPower: 17500
+    Han Solo:
+      minCharPower: 17500
 
-        BB-8:
-          minCharPower: 15000
-          zetas:
-            - Roll with the Punches
+    BB-8:
+      minCharPower: 15000
+      zetas:
+        - Roll with the Punches
 
-        R2-D2:
-          minCharPower: 15000
-          zetas:
-            - Number Crunch
+    R2-D2:
+      minCharPower: 15000
+      zetas:
+        - Number Crunch
 
-        Barris:
-          minCharPower: 17500
+    Barris:
+      minCharPower: 17500
 
-        EP:
-          minCharPower: 15000
-          zetas:
-            - Emperor of the Galactic Empire
+    EP:
+      minCharPower: 15000
+      zetas:
+        - Emperor of the Galactic Empire
 
-        Maul:
-          minCharPower: 17500
+    Maul:
+      minCharPower: 17500
 
-        Kylo Ren:
-          minCharPower: 17500
+    Kylo Ren:
+      minCharPower: 17500
 
-        Qui-Gon Jinn:
-          minCharPower: 17500
+    Qui-Gon Jinn:
+      minCharPower: 17500
 
-        Rey (Scavenger):
-          minCharPower: 15000
+    Rey (Scavenger):
+      minCharPower: 15000
 
-        GAT:
-          minCharPower: 15000
+    GAT:
+      minCharPower: 15000
 
-        Baze:
-          minRarity: 5
+    Baze:
+      minRarity: 5
 
-        Sith Trooper:
-          minRarity: 5
-          minCharPower: 11000
+    Sith Trooper:
+      minRarity: 5
+      minCharPower: 11000
 
-        Shore:
-          minRarity: 5
-          minCharPower: 11000
+    Shore:
+      minRarity: 5
+      minCharPower: 11000
 
-        Holdo:
-          minRarity: 3
+    Holdo:
+      minRarity: 3
 
-        Sion:
-          minRarity: 3
+    Sion:
+      minRarity: 3
 
-        Nihilus:
-          minRarity: 3
+    Nihilus:
+      minRarity: 3
 
-        Sith Assassin:
-          minRarity: 3
+    Sith Assassin:
+      minRarity: 3
 
-        Hermit Yoda:
-          minRarity: 5
+    Hermit Yoda:
+      minRarity: 5
 
-        Fives:
+    Fives:
+      minGearLevel: 9
+
+    Old Ben:
+      minGearLevel: 9
+
+    CHS:
+      minRarity: 6
+      minGearLevel: 9
+
+    Wampa:
+      minRarity: 6
+
+    Rex:
+      minGearLevel: 11
+
+    Talzin:
+      minRarity: 3
+      minGearLevel: 11
+
+  templates:
+    RJT Kenobis:
+      tier: 1
+      tags:
+        - TWD
+        - RJT
+        - JTR
+      characters:
+        - name: RJT
+        - name: GK
+        - name: Old Ben
+        - name: BB-8
+        - name: R2-D2
+
+    RJT Foresights:
+      tier: 1
+      tags:
+        - TWD
+        - RJT
+        - JTR
+      characters:
+        - name: RJT
+        - name: GK
+        - name: Holdo
+        - name: BB-8
+        - name: R2-D2
+
+    RJT Titans:
+      tier: 1
+      tags:
+        - TWD
+        - RJT
+        - JTR
+      characters:
+        - name: RJT
+        - name: GK
+        - name: GAT
+        - name: BB-8
+        - name: R2-D2
+
+    RJT Visas:
+      tier: 1
+      tags:
+        - TWD
+        - RJT
+        - JTR
+      characters:
+        - name: RJT
+        - name: GK
+        - name: Visas
+        - name: BB-8
+        - name: R2-D2
+
+    RJT Tanking Droids:
+      tier: 1
+      tags:
+        - TWD
+        - RJT
+        - JTR
+      characters:
+        - name: RJT
+        - name: GK
+        - name: Chopper
+        - name: BB-8
+        - name: R2-D2
+
+    RJT ft Sand Crawlers:
+      tier: 1
+      tags:
+        - TWD
+        - RJT
+        - JTR
+      characters:
+        - name: RJT
+        - name: Nebit
+        - name: Chopper
+        - name: BB-8
+        - name: R2-D2
+
+    zEP mainstream:
+      tier: 1
+      tags:
+        - TWD
+        - EP
+      characters:
+        - name: EP
+        - name: Vader
+        - name: GAT
+        - name: Nihilus
+        - name: Shore
+
+    zEP mainstream GK:
+      tier: 1
+      tags:
+        - TWD
+        - EP
+      characters:
+        - name: EP
+        - name: Vader
+        - name: GAT
+        - name: Nihilus
+        - name: GK
+
+    zEP Empire Strike Force:
+      tier: 1
+      tags:
+        - TWD
+        - EP
+      characters:
+        - name: EP
+        - name: Vader
+        - name: GAT
+        - name: Tarkin
+        - name: Shore
+
+    zEP Tarkin Annihilation:
+      tier: 1
+      tags:
+        - TWD
+        - EP
+      characters:
+        - name: EP
+        - name: Nihilus
+        - name: GAT
+        - name: Tarkin
+        - name: Shore
+
+    zEP Tarkin Sionihilation:
+      tier: 1
+      tags:
+        - TWD
+        - EP
+      characters:
+        - name: EP
+        - name: Nihilus
+        - name: Vader
+        - name: Tarkin
+        - name: Sion
+
+    zEP Imperial GK:
+      tier: 1
+      tags:
+        - TWD
+        - EP
+      characters:
+        - name: EP
+        - name: Vader
+        - name: GAT
+        - name: Tarkin
+        - name: GK
+
+    zEP GK Sion:
+      tier: 1
+      tags:
+        - TWD
+        - EP
+      characters:
+        - name: EP
+        - name: Vader
+        - name: Sion
+        - name: Nihilus
+        - name: GK
+
+    zEP Blue Sion:
+      tier: 1
+      tags:
+        - TWD
+        - EP
+      characters:
+        - name: EP
+        - name: Vader
+        - name: Sion
+        - name: Nihilus
+        - name: GAT
+
+    zEP Anti Crit:
+      tier: 1
+      tags:
+        - TWD
+        - EP
+      characters:
+        - name: EP
+        - name: Vader
+        - name: Nihilus
+        - name: Shore
+        - name: GK
+
+    zEP Blue Anti Crit:
+      tier: 1
+      tags:
+        - TWD
+        - EP
+      characters:
+        - name: EP
+        - name: Vader
+        - name: GAT
+        - name: Shore
+        - name: GK
+
+    zEP Blue Unmasked:
+      tier: 1
+      tags:
+        - TWD
+        - EP
+      characters:
+        - name: EP
+        - name: Vader
+        - name: Nihilus
+        - name: GAT
+        - name: Kylo Ren (Unmasked)
+
+    zEP Unmasked Shore:
+      tier: 1
+      tags:
+        - TWD
+        - EP
+      characters:
+        - name: EP
+        - name: Vader
+        - name: Nihilus
+        - name: Shore
+        - name: Kylo Ren (Unmasked)
+
+    zEP GK Unmasked:
+      tier: 1
+      tags:
+        - TWD
+        - EP
+      characters:
+        - name: EP
+        - name: Vader
+        - name: Nihilus
+        - name: GK
+        - name: Kylo Ren (Unmasked)
+
+    zEP Sion Unmasked:
+      tier: 1
+      tags:
+        - TWD
+        - EP
+      characters:
+        - name: EP
+        - name: Vader
+        - name: Nihilus
+        - name: Sion
+        - name: Kylo Ren (Unmasked)
+
+    zEP Nightmare:
+      tier: 1
+      tags:
+        - TWD
+        - EP
+      characters:
+        - name: EP
+        - name: Vader
+        - name: Sion
+        - name: Nihilus
+        - name: Sith Trooper
+
+    zEP Old meets New:
+      tier: 1
+      tags:
+        - TWD
+        - EP
+      characters:
+        - name: EP
+        - name: Vader
+        - name: Nihilus
+        - name: Sith Assassin
+        - name: Sith Trooper
+
+    CLS Fulcrums:
+      tier: 1
+      tags:
+        - TWD
+        - CLS
+      characters:
+        - name: CLS
+        - name: Han Solo
+        - name: Baze
+        - name: Chirrut
+        - name: Fulcrum
+
+    CLS Titans:
+      tier: 1
+      tags:
+        - TWD
+        - CLS
+      characters:
+        - name: CLS
+        - name: Han Solo
+        - name: GAT
+        - name: GK
+        - name: R2-D2
+
+    CLS Kenobis:
+      tier: 1
+      tags:
+        - TWD
+        - CLS
+      characters:
+        - name: CLS
+        - name: Han Solo
+        - name: Old Ben
+        - name: GK
+        - name: R2-D2
+
+    CLS Chaze GAT:
+      tier: 1
+      tags:
+        - TWD
+        - CLS
+      characters:
+        - name: CLS
+        - name: Han Solo
+        - name: Baze
+        - name: Chirrut
+        - name: GAT
+
+    CLS Hoth Chaze:
+      tier: 1
+      tags:
+        - TWD
+        - CLS
+      characters:
+        - name: CLS
+        - name: Han Solo
+        - name: Baze
+        - name: Chirrut
+        - name: CHS
+
+    CLS Stormtrooper Chaze:
+      tier: 1
+      tags:
+        - TWD
+        - CLS
+      characters:
+        - name: CLS
+        - name: Han Solo
+        - name: Baze
+        - name: Chirrut
+        - name: Stormtrooper Han
+
+    CLS Ben Chazing Wabbits:
+      tier: 1
+      tags:
+        - TWD
+        - CLS
+      characters:
+        - name: CLS
+        - name: Han Solo
+        - name: Baze
+        - name: Chirrut
+        - name: Old Ben
+
+    CLS Hans:
+      tier: 1
+      tags:
+        - TWD
+        - CLS
+      characters:
+        - name: CLS
+        - name: Han Solo
+        - name: CHS
+        - name: Stormtrooper Han
+        - name: Old Ben
+
+    CLS Hope:
+      tier: 1
+      tags:
+        - TWD
+        - CLS
+      characters:
+        - name: CLS
+        - name: Han Solo
+        - name: Princess Leia
+        - name: Stormtrooper Han
+        - name: Old Ben
+
+    CLS Pathfinders:
+      tier: 1
+      tags:
+        - TWD
+        - CLS
+      characters:
+        - name: CLS
+        - name: Han Solo
+        - name: Baze
+        - name: Chirrut
+        - name: SRP
+
+    CLS R1 Revival:
+      tier: 1
+      tags:
+        - TWD
+        - CLS
+      characters:
+        - name: CLS
+        - name: Baze
+        - name: Erso
+        - name: Chirrut
+        - name: SRP
+
+    GK Zarriss countering taunts:
+      tier: 1
+      tags:
+        - TWD
+        - Zarris
+      characters:
+        - name: GK
+        - name: Barris
+        - name: Sun Fac
+        - name: Fives
+        - name: Stormtrooper Han
+
+    GK-Zarriss countering tanks:
+      tier: 1
+      tags:
+        - TWD
+        - Zarris
+      characters:
+        - name: GK
+        - name: Barris
+        - name: Sun Fac
+        - name: Fives
+        - name: Nihilus
+
+    GK-Zarriss Dagobah counters:
+      tier: 1
+      tags:
+        - TWD
+        - Zarris
+      characters:
+        - name: GK
+        - name: Barris
+        - name: Sun Fac
+        - name: Fives
+        - name: Hermit Yoda
+
+    GK-Zarriss Tenacious counters:
+      tier: 1
+      tags:
+        - TWD
+        - Zarris
+      characters:
+        - name: GK
+        - name: Barris
+        - name: GMY
+        - name: Fives
+        - name: JKA
+
+    GK-Zarriss Jedi Counters:
+      tier: 1
+      tags:
+        - TWD
+        - Zarris
+      characters:
+        - name: GK
+        - name: Barris
+        - name: JKA
+        - name: GMY
+        - name: Aayla
+
+    GK-Zarriss Jedi All Stars:
+      tier: 1
+      tags:
+        - TWD
+        - Zarris
+      characters:
+        - name: GK
+        - name: Barris
+        - name: JKA
+        - name: GMY
+        - name: Windu
+
+    Rex-wan-Tampa Unmasked:
+      tier: 1
+      tags:
+        - TWD
+        - Rex
+      characters:
+        - name: Rex
+        - name: Talzin
+        - name: Old Ben
+        - name: Wampa
+        - name: Kylo Ren (Unmasked)
+
+    Rex-wan-Tampa GK:
+      tier: 1
+      tags:
+        - TWD
+        - Rex
+      characters:
+        - name: Rex
+        - name: Talzin
+        - name: Old Ben
+        - name: Wampa
+        - name: GK
+
+    Rex-wan-Tampa:
+      tier: 1
+      tags:
+        - TWD
+        - Rex
+      characters:
+        - name: Rex
+        - name: Talzin
+        - name: Old Ben
+        - name: Wampa
+        - name: Shore
+
+    Wampa cleanse:
+      tier: 1
+      tags:
+        - TWD
+        - Rex
+      characters:
+        - name: Rex
+        - name: GAT
+        - name: Nihilus
+        - name: Wampa
+        - name: GK
+
+    R1 with CLS:
+      tier: 2
+      tags:
+        - TWD
+        - R1
+      characters:
+        - name: Erso
+        - name: CLS
+        - name: Chirrut
+        - name: SRP
+        - name: Baze
+
+    Zaul Mainstream:
+      tier: 2
+      tags:
+        - TWD
+        - Zaul
+      characters:
+        - name: Maul
+        - name: Opress
+        - name: Nihilus
+        - name: Sith Assassin
+        - name: Sith Trooper
+
+    Zaul Master and Apprentice:
+      tier: 2
+      tags:
+        - TWD
+        - Zaul
+      characters:
+        - name: Maul
+        - name: Opress
+        - name: Sidious
+        - name: Sith Assassin
+        - name: Sith Trooper
+
+    Zaul Emperor (Master and Apprentice 2):
+      tier: 2
+      tags:
+        - TWD
+        - Zaul
+      characters:
+        - name: Maul
+        - name: Opress
+        - name: EP
+        - name: Sith Assassin
+        - name: Sith Trooper
+
+    Zaul Kylo:
+      tier: 2
+      tags:
+        - TWD
+        - Zaul
+      characters:
+        - name: Maul
+        - name: Opress
+        - name: Sith Assassin
+        - name: Nihilus
+        - name: Kylo Ren
+
+    Zaul Offense is the best Defense:
+      tier: 2
+      tags:
+        - TWD
+        - Zaul
+      characters:
+        - name: Maul
+        - name: Opress
+        - name: Sith Assassin
+        - name: Nihilus
+        - name: Sidious
+
+    Zaul Jedi Assasins:
+      tier: 2
+      tags:
+        - TWD
+        - Zaul
+      characters:
+        - name: Maul
+        - name: Opress
+        - name: Dooku
+        - name: Sidious
+        - name: Sith Assassin
+
+    zQGJ Clone Wars:
+      tier: 3
+      tags:
+        - TWD
+        - zQGJ
+      characters:
+        - name: Qui-Gon Jinn
+        - name: R2-D2
+        - name: GK
+        - name: JKA
+        - name: GMY
+
+    zQGJ Stun Wars:
+      tier: 3
+      tags:
+        - TWD
+        - zQGJ
+      characters:
+        - name: Qui-Gon Jinn
+        - name: R2-D2
+        - name: GK
+        - name: JKA
+        - name: Aayla
+
+    zQGJ Hermit Wars:
+      tier: 3
+      tags:
+        - TWD
+        - zQGJ
+      characters:
+        - name: Qui-Gon Jinn
+        - name: R2-D2
+        - name: GK
+        - name: JKA
+        - name: Hermit Yoda
+
+    zQGJ Hermit Ezra:
+      tier: 3
+      tags:
+        - TWD
+        - zQGJ
+      characters:
+        - name: Qui-Gon Jinn
+        - name: R2-D2
+        - name: GK
+        - name: Ezra
+        - name: Hermit Yoda
+
+    zQGJ Hermit Phoenix:
+      tier: 3
+      tags:
+        - TWD
+        - zQGJ
+      characters:
+        - name: Qui-Gon Jinn
+        - name: R2-D2
+        - name: Kanan
+        - name: Ezra
+        - name: Hermit Yoda
+
+    zQGJ Hermit Phoenix Tanks:
+      tier: 3
+      tags:
+        - TWD
+        - zQGJ
+      characters:
+        - name: Qui-Gon Jinn
+        - name: GK
+        - name: Kanan
+        - name: Ezra
+        - name: Hermit Yoda
+
+    zQGJ Hermit Phoenix Stuns:
+      tier: 3
+      tags:
+        - TWD
+        - zQGJ
+      characters:
+        - name: Qui-Gon Jinn
+        - name: Aayla
+        - name: Kanan
+        - name: Ezra
+        - name: Hermit Yoda
+
+    zQGJ Old Stun Wars:
+      tier: 3
+      tags:
+        - TWD
+        - zQGJ
+      characters:
+        - name: Qui-Gon Jinn
+        - name: R2-D2
+        - name: Old Ben
           minGearLevel: 9
-
-        Old Ben:
-          minGearLevel: 9
-
-        CHS:
-          minRarity: 6
-          minGearLevel: 9
-
-        Wampa:
-          minRarity: 6
-
-        Rex:
-          minGearLevel: 11
-
-        Talzin:
-          minRarity: 3
-          minGearLevel: 11
-
-      templates:
-        RJT Kenobis:
-          tier: 1
-          tags:
-            - TWD
-            - RJT
-            - JTR
-          characters:
-            - name: RJT
-            - name: GK
-            - name: Old Ben
-            - name: BB-8
-            - name: R2-D2
-
-        RJT Foresights:
-          tier: 1
-          tags:
-            - TWD
-            - RJT
-            - JTR
-          characters:
-            - name: RJT
-            - name: GK
-            - name: Holdo
-            - name: BB-8
-            - name: R2-D2
-
-        RJT Titans:
-          tier: 1
-          tags:
-            - TWD
-            - RJT
-            - JTR
-          characters:
-            - name: RJT
-            - name: GK
-            - name: GAT
-            - name: BB-8
-            - name: R2-D2
-
-        RJT Visas:
-          tier: 1
-          tags:
-            - TWD
-            - RJT
-            - JTR
-          characters:
-            - name: RJT
-            - name: GK
-            - name: Visas
-            - name: BB-8
-            - name: R2-D2
-
-        RJT Tanking Droids:
-          tier: 1
-          tags:
-            - TWD
-            - RJT
-            - JTR
-          characters:
-            - name: RJT
-            - name: GK
-            - name: Chopper
-            - name: BB-8
-            - name: R2-D2
-
-        RJT ft Sand Crawlers:
-          tier: 1
-          tags:
-            - TWD
-            - RJT
-            - JTR
-          characters:
-            - name: RJT
-            - name: Nebit
-            - name: Chopper
-            - name: BB-8
-            - name: R2-D2
-
-        zEP mainstream:
-          tier: 1
-          tags:
-            - TWD
-            - EP
-          characters:
-            - name: EP
-            - name: Vader
-            - name: GAT
-            - name: Nihilus
-            - name: Shore
-
-        zEP mainstream GK:
-          tier: 1
-          tags:
-            - TWD
-            - EP
-          characters:
-            - name: EP
-            - name: Vader
-            - name: GAT
-            - name: Nihilus
-            - name: GK
-
-        zEP Empire Strike Force:
-          tier: 1
-          tags:
-            - TWD
-            - EP
-          characters:
-            - name: EP
-            - name: Vader
-            - name: GAT
-            - name: Tarkin
-            - name: Shore
-
-        zEP Tarkin Annihilation:
-          tier: 1
-          tags:
-            - TWD
-            - EP
-          characters:
-            - name: EP
-            - name: Nihilus
-            - name: GAT
-            - name: Tarkin
-            - name: Shore
-
-        zEP Tarkin Sionihilation:
-          tier: 1
-          tags:
-            - TWD
-            - EP
-          characters:
-            - name: EP
-            - name: Nihilus
-            - name: Vader
-            - name: Tarkin
-            - name: Sion
-
-        zEP Imperial GK:
-          tier: 1
-          tags:
-            - TWD
-            - EP
-          characters:
-            - name: EP
-            - name: Vader
-            - name: GAT
-            - name: Tarkin
-            - name: GK
-
-        zEP GK Sion:
-          tier: 1
-          tags:
-            - TWD
-            - EP
-          characters:
-            - name: EP
-            - name: Vader
-            - name: Sion
-            - name: Nihilus
-            - name: GK
-
-        zEP Blue Sion:
-          tier: 1
-          tags:
-            - TWD
-            - EP
-          characters:
-            - name: EP
-            - name: Vader
-            - name: Sion
-            - name: Nihilus
-            - name: GAT
-
-        zEP Anti Crit:
-          tier: 1
-          tags:
-            - TWD
-            - EP
-          characters:
-            - name: EP
-            - name: Vader
-            - name: Nihilus
-            - name: Shore
-            - name: GK
-
-        zEP Blue Anti Crit:
-          tier: 1
-          tags:
-            - TWD
-            - EP
-          characters:
-            - name: EP
-            - name: Vader
-            - name: GAT
-            - name: Shore
-            - name: GK
-
-        zEP Blue Unmasked:
-          tier: 1
-          tags:
-            - TWD
-            - EP
-          characters:
-            - name: EP
-            - name: Vader
-            - name: Nihilus
-            - name: GAT
-            - name: Kylo Ren (Unmasked)
-
-        zEP Unmasked Shore:
-          tier: 1
-          tags:
-            - TWD
-            - EP
-          characters:
-            - name: EP
-            - name: Vader
-            - name: Nihilus
-            - name: Shore
-            - name: Kylo Ren (Unmasked)
-
-        zEP GK Unmasked:
-          tier: 1
-          tags:
-            - TWD
-            - EP
-          characters:
-            - name: EP
-            - name: Vader
-            - name: Nihilus
-            - name: GK
-            - name: Kylo Ren (Unmasked)
-
-        zEP Sion Unmasked:
-          tier: 1
-          tags:
-            - TWD
-            - EP
-          characters:
-            - name: EP
-            - name: Vader
-            - name: Nihilus
-            - name: Sion
-            - name: Kylo Ren (Unmasked)
-
-        zEP Nightmare:
-          tier: 1
-          tags:
-            - TWD
-            - EP
-          characters:
-            - name: EP
-            - name: Vader
-            - name: Sion
-            - name: Nihilus
-            - name: Sith Trooper
-
-        zEP Old meets New:
-          tier: 1
-          tags:
-            - TWD
-            - EP
-          characters:
-            - name: EP
-            - name: Vader
-            - name: Nihilus
-            - name: Sith Assassin
-            - name: Sith Trooper
-
-        CLS Fulcrums:
-          tier: 1
-          tags:
-            - TWD
-            - CLS
-          characters:
-            - name: CLS
-            - name: Han Solo
-            - name: Baze
-            - name: Chirrut
-            - name: Fulcrum
-
-        CLS Titans:
-          tier: 1
-          tags:
-            - TWD
-            - CLS
-          characters:
-            - name: CLS
-            - name: Han Solo
-            - name: GAT
-            - name: GK
-            - name: R2-D2
-
-        CLS Kenobis:
-          tier: 1
-          tags:
-            - TWD
-            - CLS
-          characters:
-            - name: CLS
-            - name: Han Solo
-            - name: Old Ben
-            - name: GK
-            - name: R2-D2
-
-        CLS Chaze GAT:
-          tier: 1
-          tags:
-            - TWD
-            - CLS
-          characters:
-            - name: CLS
-            - name: Han Solo
-            - name: Baze
-            - name: Chirrut
-            - name: GAT
-
-        CLS Hoth Chaze:
-          tier: 1
-          tags:
-            - TWD
-            - CLS
-          characters:
-            - name: CLS
-            - name: Han Solo
-            - name: Baze
-            - name: Chirrut
-            - name: CHS
-
-        CLS Stormtrooper Chaze:
-          tier: 1
-          tags:
-            - TWD
-            - CLS
-          characters:
-            - name: CLS
-            - name: Han Solo
-            - name: Baze
-            - name: Chirrut
-            - name: Stormtrooper Han
-
-        CLS Ben Chazing Wabbits:
-          tier: 1
-          tags:
-            - TWD
-            - CLS
-          characters:
-            - name: CLS
-            - name: Han Solo
-            - name: Baze
-            - name: Chirrut
-            - name: Old Ben
-
-        CLS Hans:
-          tier: 1
-          tags:
-            - TWD
-            - CLS
-          characters:
-            - name: CLS
-            - name: Han Solo
-            - name: CHS
-            - name: Stormtrooper Han
-            - name: Old Ben
-
-        CLS Hope:
-          tier: 1
-          tags:
-            - TWD
-            - CLS
-          characters:
-            - name: CLS
-            - name: Han Solo
-            - name: Princess Leia
-            - name: Stormtrooper Han
-            - name: Old Ben
-
-        CLS Pathfinders:
-          tier: 1
-          tags:
-            - TWD
-            - CLS
-          characters:
-            - name: CLS
-            - name: Han Solo
-            - name: Baze
-            - name: Chirrut
-            - name: SRP
-
-        CLS R1 Revival:
-          tier: 1
-          tags:
-            - TWD
-            - CLS
-          characters:
-            - name: CLS
-            - name: Baze
-            - name: Erso
-            - name: Chirrut
-            - name: SRP
-
-        GK Zarriss countering taunts:
-          tier: 1
-          tags:
-            - TWD
-            - Zarris
-          characters:
-            - name: GK
-            - name: Barris
-            - name: Sun Fac
-            - name: Fives
-            - name: Stormtrooper Han
-
-        GK-Zarriss countering tanks:
-          tier: 1
-          tags:
-            - TWD
-            - Zarris
-          characters:
-            - name: GK
-            - name: Barris
-            - name: Sun Fac
-            - name: Fives
-            - name: Nihilus
-
-        GK-Zarriss Dagobah counters:
-          tier: 1
-          tags:
-            - TWD
-            - Zarris
-          characters:
-            - name: GK
-            - name: Barris
-            - name: Sun Fac
-            - name: Fives
-            - name: Hermit Yoda
-
-        GK-Zarriss Tenacious counters:
-          tier: 1
-          tags:
-            - TWD
-            - Zarris
-          characters:
-            - name: GK
-            - name: Barris
-            - name: GMY
-            - name: Fives
-            - name: JKA
-
-        GK-Zarriss Jedi Counters:
-          tier: 1
-          tags:
-            - TWD
-            - Zarris
-          characters:
-            - name: GK
-            - name: Barris
-            - name: JKA
-            - name: GMY
-            - name: Aayla
-
-        GK-Zarriss Jedi All Stars:
-          tier: 1
-          tags:
-            - TWD
-            - Zarris
-          characters:
-            - name: GK
-            - name: Barris
-            - name: JKA
-            - name: GMY
-            - name: Windu
-
-        Rex-wan-Tampa Unmasked:
-          tier: 1
-          tags:
-            - TWD
-            - Rex
-          characters:
-            - name: Rex
-            - name: Talzin
-            - name: Old Ben
-            - name: Wampa
-            - name: Kylo Ren (Unmasked)
-
-        Rex-wan-Tampa GK:
-          tier: 1
-          tags:
-            - TWD
-            - Rex
-          characters:
-            - name: Rex
-            - name: Talzin
-            - name: Old Ben
-            - name: Wampa
-            - name: GK
-
-        Rex-wan-Tampa:
-          tier: 1
-          tags:
-            - TWD
-            - Rex
-          characters:
-            - name: Rex
-            - name: Talzin
-            - name: Old Ben
-            - name: Wampa
-            - name: Shore
-
-        Wampa cleanse:
-          tier: 1
-          tags:
-            - TWD
-            - Rex
-          characters:
-            - name: Rex
-            - name: GAT
-            - name: Nihilus
-            - name: Wampa
-            - name: GK
-
-        R1 with CLS:
-          tier: 2
-          tags:
-            - TWD
-            - R1
-          characters:
-            - name: Erso
-            - name: CLS
-            - name: Chirrut
-            - name: SRP
-            - name: Baze
-
-        Zaul Mainstream:
-          tier: 2
-          tags:
-            - TWD
-            - Zaul
-          characters:
-            - name: Maul
-            - name: Opress
-            - name: Nihilus
-            - name: Sith Assassin
-            - name: Sith Trooper
-
-        Zaul Master and Apprentice:
-          tier: 2
-          tags:
-            - TWD
-            - Zaul
-          characters:
-            - name: Maul
-            - name: Opress
-            - name: Sidious
-            - name: Sith Assassin
-            - name: Sith Trooper
-
-        Zaul Emperor (Master and Apprentice 2):
-          tier: 2
-          tags:
-            - TWD
-            - Zaul
-          characters:
-            - name: Maul
-            - name: Opress
-            - name: EP
-            - name: Sith Assassin
-            - name: Sith Trooper
-
-        Zaul Kylo:
-          tier: 2
-          tags:
-            - TWD
-            - Zaul
-          characters:
-            - name: Maul
-            - name: Opress
-            - name: Sith Assassin
-            - name: Nihilus
-            - name: Kylo Ren
-
-        Zaul Offense is the best Defense:
-          tier: 2
-          tags:
-            - TWD
-            - Zaul
-          characters:
-            - name: Maul
-            - name: Opress
-            - name: Sith Assassin
-            - name: Nihilus
-            - name: Sidious
-
-        Zaul Jedi Assasins:
-          tier: 2
-          tags:
-            - TWD
-            - Zaul
-          characters:
-            - name: Maul
-            - name: Opress
-            - name: Dooku
-            - name: Sidious
-            - name: Sith Assassin
-
-        zQGJ Clone Wars:
-          tier: 3
-          tags:
-            - TWD
-            - zQGJ
-          characters:
-            - name: Qui-Gon Jinn
-            - name: R2-D2
-            - name: GK
-            - name: JKA
-            - name: GMY
-
-        zQGJ Stun Wars:
-          tier: 3
-          tags:
-            - TWD
-            - zQGJ
-          characters:
-            - name: Qui-Gon Jinn
-            - name: R2-D2
-            - name: GK
-            - name: JKA
-            - name: Aayla
-
-        zQGJ Hermit Wars:
-          tier: 3
-          tags:
-            - TWD
-            - zQGJ
-          characters:
-            - name: Qui-Gon Jinn
-            - name: R2-D2
-            - name: GK
-            - name: JKA
-            - name: Hermit Yoda
-
-        zQGJ Hermit Ezra:
-          tier: 3
-          tags:
-            - TWD
-            - zQGJ
-          characters:
-            - name: Qui-Gon Jinn
-            - name: R2-D2
-            - name: GK
-            - name: Ezra
-            - name: Hermit Yoda
-
-        zQGJ Hermit Phoenix:
-          tier: 3
-          tags:
-            - TWD
-            - zQGJ
-          characters:
-            - name: Qui-Gon Jinn
-            - name: R2-D2
-            - name: Kanan
-            - name: Ezra
-            - name: Hermit Yoda
-
-        zQGJ Hermit Phoenix Tanks:
-          tier: 3
-          tags:
-            - TWD
-            - zQGJ
-          characters:
-            - name: Qui-Gon Jinn
-            - name: GK
-            - name: Kanan
-            - name: Ezra
-            - name: Hermit Yoda
-
-        zQGJ Hermit Phoenix Stuns:
-          tier: 3
-          tags:
-            - TWD
-            - zQGJ
-          characters:
-            - name: Qui-Gon Jinn
-            - name: Aayla
-            - name: Kanan
-            - name: Ezra
-            - name: Hermit Yoda
-
-        zQGJ Old Stun Wars:
-          tier: 3
-          tags:
-            - TWD
-            - zQGJ
-          characters:
-            - name: Qui-Gon Jinn
-            - name: R2-D2
-            - name: Old Ben
-              minGearLevel: 9
-            - name: JKA
-            - name: Aayla
-
-        Phoenix wo Chopper:
-          tier: 3
-          tags:
-            - TWD
-            - Phoenix
-          characters:
-            - name: Hera
-            - name: Kanan
-            - name: Zeb
-            - name: Ezra
-            - name: Sabine
-
-        Phoenix wo Sabine:
-          tier: 3
-          tags:
-            - TWD
-            - Phoenix
-          characters:
-            - name: Hera
-            - name: Kanan
-            - name: Zeb
-            - name: Ezra
-            - name: Chopper
-
-        Phoenix wo Zeb:
-          tier: 3
-          tags:
-            - TWD
-            - Phoenix
-          characters:
-            - name: Hera
-            - name: Kanan
-            - name: Sabine
-            - name: Ezra
-            - name: Chopper
-
-        Phoenix wo Kanan:
-          tier: 3
-          tags:
-            - TWD
-            - Phoenix
-          characters:
-            - name: Hera
-            - name: Zeb
-            - name: Sabine
-            - name: Ezra
-            - name: Chopper
-
-        Phoenix wo Ezra:
-          tier: 3
-          tags:
-            - TWD
-            - Phoenix
-          characters:
-            - name: Hera
-            - name: Zeb
-            - name: Sabine
-            - name: Kanan
-            - name: Chopper
+        - name: JKA
+        - name: Aayla
+
+    Phoenix wo Chopper:
+      tier: 3
+      tags:
+        - TWD
+        - Phoenix
+      characters:
+        - name: Hera
+        - name: Kanan
+        - name: Zeb
+        - name: Ezra
+        - name: Sabine
+
+    Phoenix wo Sabine:
+      tier: 3
+      tags:
+        - TWD
+        - Phoenix
+      characters:
+        - name: Hera
+        - name: Kanan
+        - name: Zeb
+        - name: Ezra
+        - name: Chopper
+
+    Phoenix wo Zeb:
+      tier: 3
+      tags:
+        - TWD
+        - Phoenix
+      characters:
+        - name: Hera
+        - name: Kanan
+        - name: Sabine
+        - name: Ezra
+        - name: Chopper
+
+    Phoenix wo Kanan:
+      tier: 3
+      tags:
+        - TWD
+        - Phoenix
+      characters:
+        - name: Hera
+        - name: Zeb
+        - name: Sabine
+        - name: Ezra
+        - name: Chopper
+
+    Phoenix wo Ezra:
+      tier: 3
+      tags:
+        - TWD
+        - Phoenix
+      characters:
+        - name: Hera
+        - name: Zeb
+        - name: Sabine
+        - name: Kanan
+        - name: Chopper

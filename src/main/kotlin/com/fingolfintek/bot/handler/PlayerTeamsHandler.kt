@@ -3,7 +3,6 @@ package com.fingolfintek.bot.handler
 import com.fingolfintek.swgohgg.guild.GuildChannelRepository
 import com.fingolfintek.swgohgg.player.PlayerCollection
 import com.fingolfintek.teams.OptimalTeamsResolver
-import com.fingolfintek.teams.Teams
 import io.vavr.control.Option
 import io.vavr.control.Try
 import net.dv8tion.jda.core.entities.Message
@@ -11,8 +10,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
 @Component
-open class TeamTwDefenseHandler(
-    private val teamDefinitions: Teams,
+open class PlayerTeamsHandler(
     private val guildChannelRepository: GuildChannelRepository,
     private val teamsResolver: OptimalTeamsResolver
 ) : MessageHandler {
@@ -20,7 +18,7 @@ open class TeamTwDefenseHandler(
   private val logger = LoggerFactory.getLogger(javaClass)
 
   private val messageRegex = Regex(
-      "!tw\\s+defense-team\\s*(.+)\\s*",
+      "!teams\\s+(verbose\\s+)?(\\w+)\\s+(.+)",
       setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL)
   )
 
@@ -29,18 +27,19 @@ open class TeamTwDefenseHandler(
 
   override fun processMessage(message: Message) {
     Try.ofSupplier { messageRegex.matchEntire(message.content)!! }
+        .peek { message.channel.sendTyping().queue() }
         .andThenTry { match ->
-          val teamName = match.groupValues[1].trim()
-
           val guildRoster = guildChannelRepository
               .getRosterForChannel(message.channel.id)
               .sortedBy { it.name }
 
-          message.channel.sendTyping().queue()
+          val verbose = match.groupValues[1].isNotBlank()
+          val tag = match.groupValues[2].trim().toUpperCase()
+          val playerName = match.groupValues[3].trim()
 
-          Option.of(teamDefinitions.tw.defense.templates.getValue(teamName))
-              .peek { processTeamsFor(teamName, guildRoster, message) }
-              .onEmpty { message.respondWith("Team $teamName not found") }
+          Option.of(guildRoster.find { playerName == it.name })
+              .peek { processTeamsFor(it!!, tag, verbose, message) }
+              .onEmpty { message.respondWith("Player $playerName not found") }
         }
         .onFailure {
           sendErrorMessageFor(it, message)
@@ -48,17 +47,14 @@ open class TeamTwDefenseHandler(
   }
 
   private fun processTeamsFor(
-      teamName: String, rosters: List<PlayerCollection>, message: Message) {
+      roster: PlayerCollection, tag: String, verbose: Boolean, message: Message) {
+    if (verbose) {
+      val compatibleTeams = teamsResolver.compatibleTeamsFor(roster, tag).teams
+      message.respondWithEmbed("${roster.name}'s compatible teams", compatibleTeams) { "$it\n\n" }
+    }
 
-    val playersWithTeam = rosters
-        .map { teamsResolver.compatibleTeamsFor(it) }
-        .filter { it.teams.any { it.name == teamName } }
-        .joinToString("\n") {
-          val team = it.teams.find { it.name == teamName }
-          "${it.playerName} ${team!!.power() / 1000}k"
-        }
-
-    message.respondWithEmbed("Players with $teamName", playersWithTeam)
+    val optimalTeams = teamsResolver.resolveOptimalTeamsFor(roster, tag)
+    message.respondWithEmbed("${roster.name}'s optimal teams", optimalTeams) { "$it\n\n" }
   }
 
   private fun sendErrorMessageFor(it: Throwable, message: Message) {
