@@ -7,7 +7,6 @@ import io.vavr.Tuple
 import io.vavr.control.Try
 import net.dv8tion.jda.core.entities.Message
 import org.springframework.stereotype.Component
-import java.util.function.Consumer
 
 @Component
 open class PlatoonHandler(
@@ -15,7 +14,7 @@ open class PlatoonHandler(
     private val guildChannelRepository: GuildChannelRepository) : MessageHandler {
 
   private val messageRegex = Regex(
-      "!tb\\s+platoon\\s+p([1-6])\\s+(.+)\\s+(\\d+)",
+      "!tb\\s+(ship-)?platoon\\s+([1-7])\\*\\s+(.+)\\s+(\\d+)",
       RegexOption.IGNORE_CASE
   )
 
@@ -24,22 +23,23 @@ open class PlatoonHandler(
 
   override fun processMessage(message: Message) {
     Try.ofSupplier { messageRegex.matchEntire(message.content)!! }
-        .andThen(Consumer {
-          val rarity = 1 + it.groupValues[1].toInt()
-          val limit = it.groupValues[3].toInt()
-          val name = it.groupValues[2]
+        .andThen { matched ->
+          val squadrons = matched.groupValues[1].isNotBlank()
+          val combatType = if (squadrons) 2 else 1
+          val rarity = matched.groupValues[2].toInt()
+          val limit = matched.groupValues[4].toInt()
+          val name = matched.groupValues[3]
 
           unitRepository.searchByName(name)
-              .map { toPriorityListOfMembersHavingUnitAt(message.channel.id, it, rarity, limit) }
+              .filter { it.combat_type == combatType }
+              .map { toListOfMembersHavingUnitAt(message.channel.id, it, rarity, limit) }
               .peek { message.respondWithEmbed("Platoon report", it) }
-              .onEmpty {
-                message.respondWithEmbed("Platoon report", "No members found that have $name at $rarity*")
-              }
-        })
-        .onFailure { message.respondWithEmbed("Platoon report", "Error processing message: ${it.message}") }
+              .onEmpty { sendNoMatchesMessageFor(message, name, rarity) }
+        }
+        .onFailure { sendFailureMessageFor(message, it) }
   }
 
-  private fun toPriorityListOfMembersHavingUnitAt(
+  private fun toListOfMembersHavingUnitAt(
       channelId: String, unit: Unit, rarity: Int, limit: Int): String {
 
     return guildChannelRepository.getRosterForChannel(channelId)
@@ -48,7 +48,6 @@ open class PlatoonHandler(
               .filter { it.unit == unit }
               .map { Tuple.of(playerCollection.name, it) }
         }
-        .filter { it._2.unit.combat_type == 1 }
         .filter { it._2.rarity >= rarity }
         .sortedBy { it._2.power }
         .map { "${it._1} (${it._2.toPowerString()})" }
@@ -60,6 +59,14 @@ open class PlatoonHandler(
             separator = "\n",
             transform = { "${it.index + 1}. ${it.value}" }
         )
+  }
+
+  private fun sendNoMatchesMessageFor(message: Message, name: String, rarity: Int) {
+    message.respondWithEmbed("Platoon report", "No members found that have $name at $rarity*")
+  }
+
+  private fun sendFailureMessageFor(message: Message, it: Throwable) {
+    message.respondWithEmbed("Platoon report", "Error processing message: ${it.message}")
   }
 
 }
