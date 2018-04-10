@@ -8,7 +8,7 @@ spring:
 
 teams:
   defaultRequirements:
-    minLevel: 80
+    minLevel: 85
     minCharPower: 12000
     minRarity: 7
     minGearLevel: 10
@@ -106,6 +106,8 @@ teams:
       minGearLevel: 11
 
   templates:
+
+  #  TW DEFENCE TEAMS
     RJT Kenobis:
       tier: 1
       tags:
@@ -805,7 +807,8 @@ teams:
         - name: Qui-Gon Jinn
         - name: R2-D2
         - name: Old Ben
-          minGearLevel: 9
+          requirements:
+            minGearLevel: 9
         - name: JKA
         - name: Aayla
 
@@ -868,3 +871,302 @@ teams:
         - name: Sabine
         - name: Kanan
         - name: Chopper
+
+    # STR TEAMS
+
+    P1 RJT Kenobis:
+      tier: 1
+      tags:
+        - STR
+        - STRP1
+      characters:
+        - name: RJT
+          requirements:
+            minGearLevel: 12
+        - name: BB-8
+          requirements:
+            minRarity: 7
+            minGearLevel: 12
+            zetas:
+              - Self-Preservation Protocol
+        - name: R2-D2
+          requirements:
+            minRarity: 7
+            minGearLevel: 12
+            zetas:
+              - Combat Analysis
+        - name: Rey (Scavenger)
+          requirements:
+            minRarity: 7
+            minGearLevel: 12
+        - name: Resistance Trooper
+          requirements:
+            minRarity: 7
+            minGearLevel: 12
+
+    P2 Pathfinders Training:
+      tier: 1
+      tags:
+        - STR
+        - STRP2
+      characters:
+        - name: CLS
+          requirements:
+            minGearLevel: 12
+        - name: Hermit Yoda
+          requirements:
+            minGearLevel: 12
+            zetas:
+              - Do or Do Not
+              - Strength Flows From the Force
+        - name: SRP
+          requirements:
+            minRarity: 7
+            minGearLevel: 12
+        - name: Ezra
+          requirements:
+            minRarity: 7
+            minGearLevel: 12
+            zetas:
+              - Flourish
+        - name: Sabine
+          requirements:
+            minRarity: 7
+            minGearLevel: 12
+
+    P2 Beast Mode:
+      tier: 1
+      tags:
+        - STR
+        - STRP2
+      characters:
+        - name: Old Ben
+          requirements:
+            minRarity: 7
+            minGearLevel: 12
+        - name: GK
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+        - name: Wampa
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+        - name: GAT
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+        - name: Sabine
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+
+    P2 Nute Leia:
+      tier: 1
+      tags:
+        - STR
+        - STRP2
+      characters:
+        - name: Nute
+          requirements:
+            minRarity: 7
+            minGearLevel: 7
+            minCharPower: 8000
+        - name: GK
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+        - name: Old Ben
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+        - name: Princess Leia
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+        - name: Barris
+          requirements:
+            minGearLevel: 11
+            minRarity: 7
+
+    P3 Chex Mix:
+      tier: 1
+      tags:
+        - STR
+        - STRP3
+      characters:
+        - name: CLS
+          requirements:
+            minRarity: 7
+            zetas:
+        - name: Han Solo
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+            zetas:
+              - Shoots First
+        - name: Chirrut
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+        - name: Death Trooper
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+        - name: Rex
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+
+    P3 Chex Mix wo/ Chirrut:
+      tier: 1
+      tags:
+        - STR
+        - STRP3
+      characters:
+        - name: CLS
+          requirements:
+            minRarity: 7
+            zetas:
+        - name: Han Solo
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+            zetas:
+              - Shoots First
+        - name: Rex
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+        - name: Death Trooper
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+        - name: Pao
+          requirements:
+            minGearLevel: 8
+            minRarity: 7
+
+    P3 Chex Mix w/ JKA:
+      tier: 1
+      tags:
+        - STR
+        - STRP3
+      characters:
+        - name: CLS
+          requirements:
+            minRarity: 7
+            zetas:
+        - name: Han Solo
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+            zetas:
+              - Shoots First
+        - name: Chirrut
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+        - name: Death Trooper
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+        - name: JKA
+          requirements:
+            minGearLevel: 11
+            minRarity: 7
+
+    P3 Chex Mix w/ Pao:
+      tier: 1
+      tags:
+        - STR
+        - STRP3
+      characters:
+        - name: CLS
+          requirements:
+            minRarity: 7
+            zetas:
+        - name: Han Solo
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+            zetas:
+              - Shoots First
+        - name: Chirrut
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+        - name: Death Trooper
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+        - name: Pao
+          requirements:
+            minGearLevel: 8
+            minRarity: 7
+
+    P4 OG NS:
+      tier: 1
+      tags:
+        - STR
+        - STRP4
+      characters:
+        - name: Ventress
+          requirements:
+            minRarity: 7
+            minGearLevel: 12
+            zetas:
+              - Nightsister Swiftness
+              - Rampage
+        - name: Old Daka
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+            zetas:
+              - Serve Again
+        - name: Acolyte
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+        - name: Talia
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+        - name: Initiate
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+
+    P4 NS w/ Talzin:
+      tier: 1
+      tags:
+        - STR
+        - STRP4
+      characters:
+        - name: Ventress
+          requirements:
+            minRarity: 7
+            minGearLevel: 12
+            zetas:
+              - Nightsister Swiftness
+              - Rampage
+        - name: Old Daka
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+            zetas:
+              - Serve Again
+        - name: Acolyte
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+        - name: Talia
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+        - name: Talzin
+          requirements:
+            minGearLevel: 12
+            minRarity: 7
+
+

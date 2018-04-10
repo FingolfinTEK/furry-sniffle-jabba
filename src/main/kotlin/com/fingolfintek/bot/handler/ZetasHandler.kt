@@ -4,7 +4,6 @@ import com.fingolfintek.swgohgg.guild.GuildChannelRepository
 import com.fingolfintek.swgohgg.unit.UnitRepository
 import io.vavr.control.Try
 import net.dv8tion.jda.core.entities.Message
-import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
 @Component
@@ -12,8 +11,6 @@ open class ZetasHandler(
     private val unitRepository: UnitRepository,
     private val guildChannelRepository: GuildChannelRepository
 ) : MessageHandler {
-
-  private val logger = LoggerFactory.getLogger(javaClass)
 
   private val messageRegex = Regex(
       "!zeta\\s+(.+)",
@@ -45,10 +42,5 @@ open class ZetasHandler(
         .onFailure {
           sendErrorMessageFor(it, message)
         }
-  }
-
-  private fun sendErrorMessageFor(it: Throwable, message: Message) {
-    logger.error("Encountered error", it)
-    message.respondWithEmbed("Zeta report", "Error processing message: ${it.message}")
   }
 }

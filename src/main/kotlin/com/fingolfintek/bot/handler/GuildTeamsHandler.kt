@@ -4,12 +4,13 @@ import com.fingolfintek.swgohgg.guild.GuildChannelRepository
 import com.fingolfintek.swgohgg.player.PlayerCollection
 import com.fingolfintek.teams.OptimalTeamsResolver
 import com.fingolfintek.teams.Team
+import com.fingolfintek.util.createCell
+import com.fingolfintek.util.safe
 import io.vavr.Tuple2
 import io.vavr.collection.Stream
 import io.vavr.control.Try
 import net.dv8tion.jda.core.MessageBuilder
 import net.dv8tion.jda.core.entities.Message
-import org.apache.poi.ss.util.WorkbookUtil
 import org.apache.poi.xssf.usermodel.XSSFSheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.stereotype.Component
@@ -37,15 +38,12 @@ open class GuildTeamsHandler(
           val os = writeDefenseToXlsxFor(message, tag)
           sendExcelSpreadsheetMessageFor(message, os)
         }
-        .onFailure { sendFailureMessageFor(message, it) }
+        .onFailure { sendErrorMessageFor(it, message) }
   }
 
   private fun writeDefenseToXlsxFor(message: Message, tag: String): ByteArrayOutputStream {
-    val guildRoster = guildChannelRepository
-        .getRosterForChannel(message.channel.id)
-        .groupBy { it.name }
-        .flatMap { toIndexedNamesWhereDuplicatesExist(it) }
-        .sortedBy { it.name }
+    val guildRoster =
+        guildChannelRepository.getRosterForChannel(message.channel.id)
 
     val wb = XSSFWorkbook()
     guildRoster.forEach {
@@ -55,16 +53,6 @@ open class GuildTeamsHandler(
     val os = ByteArrayOutputStream()
     os.use { wb.write(it) }
     return os
-  }
-
-  private fun toIndexedNamesWhereDuplicatesExist(
-      it: Map.Entry<String, List<PlayerCollection>>): List<PlayerCollection> {
-
-    return if (it.value.size == 1) it.value
-    else it.value
-        .mapIndexed { i, collection ->
-          collection.copy(name = "${collection.name}$i")
-        }
   }
 
   private fun XSSFWorkbook.writePlayerData(it: PlayerCollection, tag: String) {
@@ -90,19 +78,9 @@ open class GuildTeamsHandler(
     val dataRow = sheet.createRow(2 + compatibleTeam._2)
     dataRow.height = 1800
 
-    val style = sheet.workbook.createCellStyle()
-    style.wrapText = true
-
-    val compatible = dataRow.createCell(1)
-    compatible.cellStyle = style
-    compatible.setCellValue(compatibleTeam._1.toString())
-
-    val optimal = dataRow.createCell(5)
-    optimal.setCellValue(optimalTeam?.toString() ?: "")
-    optimal.cellStyle = style
+    dataRow.createCell(1, compatibleTeam._1.toString())
+    dataRow.createCell(5, optimalTeam?.toString() ?: "")
   }
-
-  private fun String.safe() = WorkbookUtil.createSafeSheetName(this)
 
   private fun sendExcelSpreadsheetMessageFor(message: Message, os: ByteArrayOutputStream) {
     message.channel.sendFile(
@@ -110,10 +88,6 @@ open class GuildTeamsHandler(
         "tw_defense.xlsx",
         MessageBuilder().append("Here are your guild's TW teams").build()
     ).queue()
-  }
-
-  private fun sendFailureMessageFor(message: Message, it: Throwable) {
-    message.respondWithEmbed("Territory War", "Error processing message: ${it.message}")
   }
 
 }

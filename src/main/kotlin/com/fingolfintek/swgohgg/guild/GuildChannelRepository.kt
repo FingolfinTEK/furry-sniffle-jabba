@@ -30,8 +30,19 @@ open class GuildChannelRepository(
   private fun rosterFor(swgohGgUrl: String) =
       GuildRoster(swgohGgUrl, guildRepository.getForGuildUrl(swgohGgUrl))
 
-  open fun getRosterForChannel(channelId: String): List<PlayerCollection> =
-      collectionsByChannel[channelId]?.roster ?: emptyList()
+  open fun getRosterForChannel(channelId: String): List<PlayerCollection> {
+    val rosters = collectionsByChannel[channelId]?.roster ?: emptyList()
+    return rosters
+        .groupBy { it.name }
+        .flatMap {
+          if (it.value.size == 1) it.value
+          else it.value
+              .mapIndexed { i, collection ->
+                collection.copy(name = "${collection.name}$i")
+              }
+        }
+        .sortedBy { it.name }
+  }
 
   @PostConstruct
   private fun populateFromRedis() {

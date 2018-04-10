@@ -7,7 +7,6 @@ import com.fingolfintek.teams.Teams
 import io.vavr.control.Option
 import io.vavr.control.Try
 import net.dv8tion.jda.core.entities.Message
-import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
 @Component
@@ -16,8 +15,6 @@ open class TeamHandler(
     private val guildChannelRepository: GuildChannelRepository,
     private val teamsResolver: OptimalTeamsResolver
 ) : MessageHandler {
-
-  private val logger = LoggerFactory.getLogger(javaClass)
 
   private val messageRegex = Regex(
       "!team\\s+(.+)\\s*",
@@ -59,10 +56,5 @@ open class TeamHandler(
         }
 
     message.respondWithEmbed("Players with $teamName", playersWithTeam)
-  }
-
-  private fun sendErrorMessageFor(it: Throwable, message: Message) {
-    logger.error("Encountered error", it)
-    message.respondWithEmbed("Territory War", "Error processing message: ${it.message}")
   }
 }

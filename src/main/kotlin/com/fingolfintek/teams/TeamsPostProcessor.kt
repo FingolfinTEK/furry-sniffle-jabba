@@ -22,7 +22,7 @@ open class TeamsPostProcessor(
 
   open fun postProcess(teams: Teams) {
     logger.info(
-        "Loaded {} defensive teams for TW",
+        "Loaded {} team definitions",
         teams.templates.size)
 
     teams.replaceUnitNames(unitRepository)

@@ -26,8 +26,7 @@ open class OptimalTeamsResolver(
   private fun Teams.compatibleTeamsFor(
       collection: PlayerCollection, vararg tags: String, tier: Int = 0): PlayerTeamCollection {
 
-    val unitsByName = collection.units
-        .toMap { it -> Tuple.of(it.unit.name, it) }
+    val unitsByName = collection.unitsByName()
 
     val teams = templates
         .filterValues { it.tags.containsAll(tags.toList()) }

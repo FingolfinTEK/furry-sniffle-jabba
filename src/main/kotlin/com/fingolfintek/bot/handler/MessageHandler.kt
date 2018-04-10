@@ -75,4 +75,9 @@ interface MessageHandler {
               { logger.debug("Responded to $content with #${it.id}") },
               { logger.error("Could not send message ${embed.description}", it) }
           )
+
+  fun sendErrorMessageFor(it: Throwable, message: Message) {
+    logger.error("Encountered error", it)
+    message.respondWithEmbed("Error message", "Error processing message: $it")
+  }
 }

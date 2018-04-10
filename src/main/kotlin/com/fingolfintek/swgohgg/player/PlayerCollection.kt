@@ -1,6 +1,7 @@
 package com.fingolfintek.swgohgg.player
 
 import com.google.common.hash.Hashing
+import io.vavr.Tuple
 import io.vavr.collection.List
 import io.vavr.collection.Map
 import java.io.Serializable
@@ -14,6 +15,9 @@ data class PlayerCollection(
 
   constructor(units: List<CollectedUnit>)
       : this(units.first().player, units.first().url, units)
+
+  fun unitsByName(): Map<String, CollectedUnit> =
+      units.toMap { Tuple.of(it.unit.name, it) }
 
   fun sha1(): String {
     return Hashing.sha1()

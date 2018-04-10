@@ -56,9 +56,4 @@ open class PlayerTeamsHandler(
     val optimalTeams = teamsResolver.resolveOptimalTeamsFor(roster, tag)
     message.respondWithEmbed("${roster.name}'s optimal teams", optimalTeams) { "$it\n\n" }
   }
-
-  private fun sendErrorMessageFor(it: Throwable, message: Message) {
-    logger.error("Encountered error", it)
-    message.respondWithEmbed("Territory War", "Error processing message: ${it.message}")
-  }
 }
