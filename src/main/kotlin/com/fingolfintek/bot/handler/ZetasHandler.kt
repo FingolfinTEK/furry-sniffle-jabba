@@ -33,8 +33,11 @@ open class ZetasHandler(
                 zetadUnits
                     .sortBy { it.unit.name }
                     .map { "__${it.unit.name}__\n\t${it.zetas.joinToString("\n\t")}" }
-                    .joinToString("\n\n")
-                    .let { message.respondWithEmbed("$playerName zetas", it) }
+                    .let {
+                      message.respondWithEmbed(
+                          "$playerName zetas (${it.size()})",
+                          it.joinToString("\n\n"))
+                    }
               }
         }
         .onFailure {
