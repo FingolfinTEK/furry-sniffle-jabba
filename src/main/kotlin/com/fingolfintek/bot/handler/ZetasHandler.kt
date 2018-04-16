@@ -32,7 +32,7 @@ open class ZetasHandler(
               .forEach { zetadUnits ->
                 zetadUnits
                     .sortBy { it.unit.name }
-                    .map { "${it.unit.name}\n\t${it.zetas.joinToString("\n\t")}" }
+                    .map { "__${it.unit.name}__\n\t${it.zetas.joinToString("\n\t")}" }
                     .joinToString("\n\n")
                     .let { message.respondWithEmbed("$playerName zetas", it) }
               }
