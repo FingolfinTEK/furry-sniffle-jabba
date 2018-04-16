@@ -37,7 +37,7 @@ open class ZetaHandler(
               .joinToString(
                   prefix = "__**$unitOrZeta**__\n\n",
                   separator = "\n",
-                  transform = { "${it.index} ${it.value.name}" })
+                  transform = { "${it.index + 1}. ${it.value.name}" })
               .let { message.respondWithEmbed("Players with $unitOrZeta zeta", it) }
         }
         .onFailure {
