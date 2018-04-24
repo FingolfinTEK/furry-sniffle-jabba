@@ -4,7 +4,6 @@ import com.fingolfintek.swgohgg.guild.GuildChannelRepository
 import com.fingolfintek.swgohgg.player.PlayerCollection
 import com.fingolfintek.teams.Teams
 import com.fingolfintek.util.createCell
-import com.fingolfintek.util.safe
 import com.fingolfintek.util.wrappableTextStyle
 import io.vavr.Tuple
 import io.vavr.Tuple2
@@ -64,12 +63,19 @@ open class GuildTeamReportHandler(
                 teamEntry.value
                     .stepsToFulfilmentFor(roster.unitsByName())
                     .filterValues { it.isNotEmpty() }
-                    .entries
+              }
+          )
+        }
+        .sortedBy { it._2.values.map { it.size }.sum() }
+        .map {
+          Tuple.of(
+              it._1,
+              it._2.mapValues {
+                it.value.entries
                     .joinToString("\n\n") {
                       "${it.key}\n\t${it.value.joinToString("\n\t")}"
                     }
-              }
-          )
+              })
         }
 
     val xlsx = createXlsxFor(guildReports)
@@ -80,8 +86,11 @@ open class GuildTeamReportHandler(
       guildReports: List<Tuple2<PlayerCollection, Map<String, String>>>): ByteArrayOutputStream {
 
     val wb = XSSFWorkbook()
+    val sheet = wb.createSheet("teams")
     guildReports.forEach {
-      wb.writePlayerData(it)
+      sheet.writePlayerData(it)
+      sheet.autoSizeColumn(1)
+      sheet.autoSizeColumn(5)
     }
 
     val os = ByteArrayOutputStream()
@@ -89,26 +98,21 @@ open class GuildTeamReportHandler(
     return os
   }
 
-  private fun XSSFWorkbook.writePlayerData(report: Tuple2<PlayerCollection, Map<String, String>>) {
-    val sheet = createSheet(report._1.name.safe())
-
+  private fun XSSFSheet.writePlayerData(report: Tuple2<PlayerCollection, Map<String, String>>) {
     report._2.map { it }
-        .forEachIndexed { index, value -> writeTeamDataTo(sheet, index, value) }
-
-    sheet.autoSizeColumn(1)
-    sheet.autoSizeColumn(5)
+        .forEachIndexed { index, value -> writeTeamDataTo(index, report._1.name, value) }
   }
 
-  private fun writeTeamDataTo(
-      sheet: XSSFSheet, index: Int, report: Map.Entry<String, String>) {
+  private fun XSSFSheet.writeTeamDataTo(
+      index: Int, player: String, report: Map.Entry<String, String>) {
 
-    val dataRow = sheet.createRow(1 + index)
-    val text = "${report.key}\n${report.value}"
+    val dataRow = createRow(lastRowNum + 1 + index)
+    val text = "$player\n\n${report.key}\n${report.value}"
     val cell = dataRow.createCell(1, text)
     dataRow.height = (600 + 310 * text.count { it == '\n' }).toShort()
 
     if (report.value.isBlank()) {
-      val style = sheet.wrappableTextStyle()
+      val style = wrappableTextStyle()
       style.setFillPattern(FillPatternType.SOLID_FOREGROUND)
       style.setFillForegroundColor(XSSFColor(Color.decode("0xccffcc")))
       cell.cellStyle = style
