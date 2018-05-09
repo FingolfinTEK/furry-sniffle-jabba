@@ -32,11 +32,12 @@ open class ZetasHandler(
               .forEach { zetadUnits ->
                 zetadUnits
                     .sortBy { it.unit.name }
-                    .map { "__${it.unit.name}__\n\t${it.zetas.joinToString("\n\t")}" }
                     .let {
-                      message.respondWithEmbed(
-                          "$playerName zetas (${it.size()})",
-                          it.joinToString("\n\n"))
+                      val title = "$playerName - ${it.size()} units, ${it.map { it.zetas.size }.sum()} zetas)"
+                      val text = it.joinToString("\n\n") {
+                        "__${it.unit.name}__\n\t${it.zetas.joinToString("\n\t")}"
+                      }
+                      message.respondWithEmbed(title, text)
                     }
               }
         }
