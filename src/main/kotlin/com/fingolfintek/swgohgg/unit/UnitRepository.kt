@@ -46,7 +46,7 @@ open class UnitRepository(private val mapper: ObjectMapper) {
     val chars = extractUnitsFrom("https://swgoh.gg/api/characters")
     logger.info("Loaded ${chars.size()} characters")
 
-    val ships = extractUnitsFrom("https://swgoh.gg/api/ships")
+    val ships = extractUnitsFrom("https://swgoh.gg/api/ships/?format=json")
     logger.info("Loaded ${ships.size()} ships")
 
     units = chars.appendAll(ships)
