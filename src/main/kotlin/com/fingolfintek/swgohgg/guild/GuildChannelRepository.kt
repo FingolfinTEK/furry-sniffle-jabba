@@ -47,10 +47,16 @@ open class GuildChannelRepository(
   @PostConstruct
   private fun populateFromRedis() {
     Stream.ofAll(redisTemplate.keys("channel-*"))
-        .forEach {
-          assignGuildForChannel(
-              channelId = it.removePrefix("channel-"),
-              swgohGgUrl = redisTemplate.boundValueOps(it).get())
+        .forEach { key ->
+          val swgohGgUrl = redisTemplate.boundValueOps(key).get()
+          Try.of {
+            assignGuildForChannel(
+                channelId = key.removePrefix("channel-"),
+                swgohGgUrl = swgohGgUrl)
+          }.onFailure {
+            redisTemplate.delete(key)
+            logger.error("Error initializing {}", swgohGgUrl, it)
+          }
         }
   }
 }
